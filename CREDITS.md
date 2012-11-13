@@ -1,6 +1,7 @@
 Programming
-  Jeff Lunt - "normalocity" - http://jefflunt.com
-	Alec "Aloshi" Lofquist - http://www.aloshi.com
+
+* Alec "Aloshi" Lofquist - http://www.aloshi.com
+* With customizations by Jeff Lunt - "normalocity" - http://jefflunt.com
 
 Resources
 =========
