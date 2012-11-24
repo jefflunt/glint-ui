@@ -1,29 +1,28 @@
-EmulationStation
-================
+glint-es
+========
 
-A graphical front-end for emulators with controller navigation. Developed both on and for the Raspbery Pi. Intended for use with RetroArch, but it can easily be used with other emulators.
+A graphical front-end for emulators with controller navigation. Developed both on and for the Raspbery Pi. Intended for use with **glint**-flavored projects, but it can easily be used with other emulators.
 
-RetroArch for the Raspberry Pi can be found here: https://github.com/ToadKing/RetroArch-Rpi
-I'm not associated with RetroArch in any way!
+glint-nes can be found here: https://github.com/normalocity/glint-nes
 
-A cool guy named petrockblog made a script which automatically installs RetroArch, its cores, and ES. It also includes options for configuring your RPi and setting it up to boot directly into ES. You can find it here: https://github.com/petrockblog/RetroPie-Setup
+I stand on the shoulders of giants (see CREDITS file). What contributions I have made are simply refinements to an already beautiful dream, created primarily by others.
 
 Building
 ========
 
 **On the Raspberry Pi:**
 
-EmulationStation has a few dependencies. For building, you'll need SDL 1.2, SDL_mixer, FreeImage, FreeType, and Boost.Filesystem, which can easily be obtained with apt-get:
+glint-es has a few dependencies. For building, you'll need SDL 1.2, SDL_mixer, FreeImage, FreeType, and Boost.Filesystem, which can easily be obtained with apt-get:
 ```
 sudo apt-get install libsdl1.2-dev libboost-filesystem-dev libfreeimage-dev libfreetype6-dev libsdl-mixer1.2-dev
 ```
 
-There are also a few libraries already on the RPi (located in /opt/vc/, like the Broadcom libraries, EGL, and GLES). You can build EmulationStation by simply running `make`.
+There are also a few libraries already on the RPi (located in /opt/vc/, like the Broadcom libraries, EGL, and GLES). You can build glint-es by simply running `make`.
 
 
 **On something else (desktop):**
 
-EmulationStation can also be built on a "normal" Linux system. You'll need the same libraries listed above:
+glint-es can also be built on a "normal" Linux system. You'll need the same libraries listed above:
 ```
 sudo apt-get install libsdl1.2-dev libboost-filesystem-dev libfreeimage-dev libfreetype6-dev libsdl-mixer1.2-dev
 ```
@@ -42,10 +41,10 @@ This should be pretty self-explanatory. If you want to reconfigure, just delete 
 Mappings will be applied to the first joystick with the same name as the joystick you configured.
 An Xbox 360 controller with the xboxdrv driver was used for testing. POV hats are automatically mapped to directions (so if you're not using an analog stick, you'll need to skip mapping Up/Down/Left/Right by pressing a keyboard key).
 
-**Keep in mind you'll have to set up your emulator separately from EmulationStation.**
+**Keep in mind you'll have to set up your emulator separately from glint-es.**
 If you're using RetroArch, a handy input config generation tool can be found in the tools/ subdirectory - you can use it with `retroarch-joyconfig -o ~/.retroarch.cfg` or something similar. You may need to tell RetroArch to load this config file with `-c ~/.retroarch.cfg` in your RetroArch launch commands.
 
-EmulationStation will return once your system's command terminates (i.e. your emulator closes).
+glint-es will return once your system's command terminates (i.e. your emulator closes).
 
 
 **Keyboard mappings:**
@@ -66,7 +65,7 @@ F1 - Open the restart/shutdown system menu
 
 F2 - Open the fast select dialog
 
-F4 - Close EmulationStation (should work as long as ES hasn't frozen)
+F4 - Close glint-es (should work as long as ES hasn't frozen)
 
 Unfortunately, there is no built-in way to change keyboard mappings - if you need to, check out `src/InputManager.cpp`. There's a switch statement with a list of keys; it should be pretty simple to change them.
 
@@ -97,9 +96,4 @@ The switch `--ignore-gamelist` can be used to ignore the gamelist and use the no
 Themes
 ======
 
-By default, EmulationStation looks pretty ugly. You can fix that. If you want to know more about making your own themes (or editing existing ones), read THEMES.md!
-
-I've put some themes up for download on my EmulationStation webpage: http://aloshi.com/emulationstation#themes
-
--Aloshi
-http://www.aloshi.com
+Being based wholly on EmulationStation, glint-es is themed in the same same, should you prefer to theme it with your custom look and feel.
