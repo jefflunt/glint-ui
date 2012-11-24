@@ -21,8 +21,24 @@ bool keepRunning = true;
 unsigned int width = 0;
 unsigned int height = 0;
 
+// Function declarations
+void init(int argc, char* argv[]);
 namespace fs = boost::filesystem;
+void enableJoystick();
+void processConfig();
+void shutdown();
+void runFrontEnd();
+void processCmdLineArgs(int argc, char* argv[]);
+void initSound();
+void shutdownSound();
+void initRendererOrDie(int width, int height);
+void ensureConfigDirectoryExists();
+void createDemoConfig();
+bool configSettingsDoNotExist();
+bool configExistsButIsEmpty();
 
+
+// Start app
 int main(int argc, char* argv[]) {
   init();
   while (keepRunning) { runFrontEnd() }
@@ -148,7 +164,6 @@ void processCmdLineArgs(int argc, char* argv[]) {
 	}
 }
 
-// 
 void initSound() {
   #ifdef _RPI_
 		bcm_host_init();
