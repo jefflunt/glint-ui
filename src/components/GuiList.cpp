@@ -19,7 +19,6 @@ GuiList<listType>::GuiList(int offsetX, int offsetY, Font* font)
 	mFont = font;
 	mSelectorColor = 0x000000FF;
 	mSelectedTextColorOverride = 0x0000FFFF;
-	mScrollSound = NULL;
 	mDrawCentered = true;
 
 	InputManager::registerComponent(this);
@@ -179,8 +178,6 @@ void GuiList<listType>::scroll()
 			mSelection -= mRowVector.size();
 	}
 
-	if(mScrollSound)
-		mScrollSound->play();
 }
 
 //list management stuff
@@ -280,12 +277,6 @@ template <typename listType>
 void GuiList<listType>::setSelection(int i)
 {
 	mSelection = i;
-}
-
-template <typename listType>
-void GuiList<listType>::setScrollSound(Sound* sound)
-{
-	mScrollSound = sound;
 }
 
 template <typename listType>
