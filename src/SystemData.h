@@ -33,7 +33,7 @@ private:
 	std::string mSearchExtension;
 	std::string mLaunchCommand;
 
-  // void populateFolder(FolderData* folder);
+  void populateFolder(FolderData* folder);
 
 	FolderData* mRootFolder;
 };
