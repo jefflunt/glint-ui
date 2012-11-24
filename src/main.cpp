@@ -29,8 +29,6 @@ void processConfigOrDie();
 void shutdown();
 void runFrontEnd();
 void processCmdLineArgs(int argc, char* argv[]);
-void initSound();
-void shutdownSound();
 void initRendererOrDie(int width, int height);
 void ensureConfigDirectoryExists();
 void createDemoConfig();
@@ -49,9 +47,7 @@ int main(int argc, char* argv[]) {
 
 void init(int argc, char* argv[]) {
   processCmdLineArgs(argc, argv);
-  initSound();
   initRendererOrDie(width, height);
-	AudioManager::init();
   enableJoystick();
   ensureConfigDirectoryExists();
   processConfigOrDie();
@@ -89,7 +85,6 @@ void processConfigOrDie() {
 }
 
 void shutdown() {
-  AudioManager::deinit();
 	Renderer::deleteAll();
 	Renderer::deinit();
 	SystemData::deleteSystems();
@@ -97,7 +92,6 @@ void shutdown() {
 	std::cout << "EmulationStation cleanly shutting down...\n";
 
 	SDL_Quit();
-  shutdownSound();
 }
 
 void runFrontEnd() {
@@ -161,18 +155,6 @@ void processCmdLineArgs(int argc, char* argv[]) {
 			}
 		}
 	}
-}
-
-void initSound() {
-  #ifdef _RPI_
-		bcm_host_init();
-	#endif
-}
-
-void shutdownSound() {
-  #ifdef _RPI_
-		bcm_host_deinit();
-	#endif
 }
 
 void initRendererOrDie(int width, int height) {
