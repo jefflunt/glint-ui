@@ -193,7 +193,7 @@ void ensureConfigDirectoryExists() {
 }
 
 void createDemoConfig() {
-  if (configSettingsDoNotExist() {
+  if (configSettingsDoNotExist()) {
     std::cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
     SystemData::writeExampleConfig();
     std::cerr << "Set it up, then re-run glint-es.\n";
@@ -206,5 +206,5 @@ bool configSettingsDoNotExist() {
 
 bool configExistsButIsEmpty() {
   SystemData::loadConfig();
-  return SystemData::sSystemVector.size() == 0;
+  return (SystemData::sSystemVector.size() == 0);
 }
