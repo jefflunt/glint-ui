@@ -8,8 +8,8 @@
 
 namespace Renderer
 {
-	unsigned int display_width = 0;
-	unsigned int display_height = 0;
+	unsigned int display_width = 640;
+	unsigned int display_height = 480;
 
 	unsigned int getScreenWidth() { return display_width; }
 	unsigned int getScreenHeight() { return display_height; }
