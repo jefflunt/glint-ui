@@ -9,6 +9,10 @@
 #include <SDL.h>
 #include "platform.h"
 
+#ifdef _RPI_
+  #include <bcm_host.h>
+#endif
+
 #include <sstream>
 
 bool DRAWFRAMERATE = false;
