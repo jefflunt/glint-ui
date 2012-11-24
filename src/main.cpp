@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-void init() {
+void init(int argc, char* argv[]) {
   processCmdLineArgs(argc, argv);
   initSound();
   initRendererOrDie(width, height);
@@ -123,7 +123,7 @@ void runFrontEnd() {
 	Renderer::swapBuffers();
 }
 
-void processCmdLineArgs(argc, argv[]) {
+void processCmdLineArgs(int argc, char* argv[]) {
   if(argc > 1) {
 		for(int i = 1; i < argc; i++) {
 			if(strcmp(argv[i], "-w") == 0) {
@@ -161,7 +161,7 @@ void shutdownSound() {
 	#endif
 }
 
-void initRendererOrDie(width, height) {
+void initRendererOrDie(int width, int height) {
   bool renderInitSuccessful = Renderer::init(width, height);
 	if(!renderInitSuccessful) {
 		std::cerr << "Error initializing renderer!\n";
