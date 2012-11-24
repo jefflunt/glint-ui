@@ -10,9 +10,9 @@ Building
 
 **On the Raspberry Pi:**
 
-glint-es has a few dependencies. For building, you'll need SDL 1.2, SDL_mixer, FreeImage, FreeType, and Boost.Filesystem, which can easily be obtained with apt-get:
+glint-es has a few dependencies. For building, you'll need SDL 1.2, FreeImage, FreeType, and Boost.Filesystem, which can easily be obtained with apt-get:
 ```
-sudo apt-get install libsdl1.2-dev libboost-filesystem-dev libfreeimage-dev libfreetype6-dev libsdl-mixer1.2-dev
+sudo apt-get install libsdl1.2-dev libboost-filesystem-dev libfreeimage-dev libfreetype6-dev
 ```
 
 There are also a few libraries already on the RPi (located in /opt/vc/, like the Broadcom libraries, EGL, and GLES). You can build glint-es by simply running `make`.
