@@ -1,7 +1,5 @@
 #include "Renderer.h"
-#include <bcm_host.h>
 #include <iostream>
-#include <bcm_host.h>
 #include <GLES/gl.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>

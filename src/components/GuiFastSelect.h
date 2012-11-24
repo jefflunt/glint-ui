@@ -4,7 +4,6 @@
 #include "../GuiComponent.h"
 #include "../SystemData.h"
 #include "../FolderData.h"
-#include "../Sound.h"
 #include "GuiList.h"
 #include "GuiBox.h"
 

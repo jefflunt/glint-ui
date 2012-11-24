@@ -7,12 +7,7 @@
 #include <boost/filesystem.hpp>
 #include "components/GuiInputConfig.h"
 #include <SDL.h>
-#include "AudioManager.h"
 #include "platform.h"
-
-#ifdef _RPI_
-	#include <bcm_host.h>
-#endif
 
 #include <sstream>
 

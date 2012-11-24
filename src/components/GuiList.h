@@ -7,7 +7,6 @@
 #include "../InputManager.h"
 #include <vector>
 #include <string>
-#include "../Sound.h"
 
 //A graphical list. Supports multiple colors for rows and scrolling.
 //TODO - add truncation to text rendering if name exceeds a maximum width (a trailing elipses, perhaps).
