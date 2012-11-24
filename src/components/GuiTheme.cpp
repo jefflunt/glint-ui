@@ -22,11 +22,6 @@ unsigned int GuiTheme::getSelectedTextColor() { return mListSelectedColor; }
 
 GuiBoxData GuiTheme::getBoxData() { return mBoxData; }
 
-Sound* GuiTheme::getMenuScrollSound() { return &mMenuScrollSound; }
-Sound* GuiTheme::getMenuSelectSound() { return &mMenuSelectSound; }
-Sound* GuiTheme::getMenuBackSound() { return &mMenuBackSound; }
-Sound* GuiTheme::getMenuOpenSound() { return &mMenuOpenSound; }
-
 float GuiTheme::getGameImageOffsetX() { return mGameImageOffsetX; }
 float GuiTheme::getGameImageOffsetY() { return mGameImageOffsetY; }
 float GuiTheme::getGameImageWidth() { return mGameImageWidth; }
@@ -97,11 +92,6 @@ void GuiTheme::setDefaults()
 	mBoxData.verticalPath = "";
 	mBoxData.verticalTiled = false;
 	mBoxData.cornerPath = "";
-
-	mMenuScrollSound.loadFile("");
-	mMenuSelectSound.loadFile("");
-	mMenuBackSound.loadFile("");
-	mMenuOpenSound.loadFile("");
 
 	mImageNotFoundPath = "";
 
@@ -201,12 +191,6 @@ void GuiTheme::readXML(std::string path)
 	mGameImageOriginY = resolveExp(artOriginY, mGameImageOriginY);
 
 	mImageNotFoundPath = expandPath(root.child("gameImageNotFound").text().get());
-
-	//sounds
-	mMenuScrollSound.loadFile(expandPath(root.child("menuScrollSound").text().get()));
-	mMenuSelectSound.loadFile(expandPath(root.child("menuSelectSound").text().get()));
-	mMenuBackSound.loadFile(expandPath(root.child("menuBackSound").text().get()));
-	mMenuOpenSound.loadFile(expandPath(root.child("menuOpenSound").text().get()));
 
 	//fonts
 	mListFont = resolveFont(root.child("listFont"), Font::getDefaultPath(), Renderer::getDefaultFont(Renderer::MEDIUM)->getSize());
