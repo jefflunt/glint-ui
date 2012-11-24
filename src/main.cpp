@@ -45,19 +45,19 @@ int main(int argc, char* argv[]) {
 }
 
 void init(int argc, char* argv[]) {
-  std::cout << "Processing command line args..."
+  std::cout << "Processing command line args...\n";
   processCmdLineArgs(argc, argv);
   
-  std::cout << "Starting renderer..."
+  std::cout << "Starting renderer...\n";
   initRendererOrDie(width, height);
   
-  std::cout << "Enabling joystick..."
+  std::cout << "Enabling joystick...\n";
   enableJoystick();
   
-  std::cout << "Checking for existence of config directory and files..."
+  std::cout << "Checking for existence of config directory and files...\n";
   ensureConfigDirectoryExists();
   
-  std::cout << "Processing config files..."
+  std::cout << "Processing config files...\n";
   processConfigOrDie();
 }
 
@@ -114,7 +114,7 @@ void runFrontEnd() {
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
 				InputManager::processEvent(&event);
-				std::cout << "Input captured (" << event.type << ")"
+        std::cout << "Input captured (" << event.type << ")\n";
 				break;
 
 			case SDL_QUIT:
