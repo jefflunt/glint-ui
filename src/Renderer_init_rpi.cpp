@@ -28,6 +28,7 @@ namespace Renderer
 
 	bool createSurface() //unsigned int display_width, unsigned int display_height)
 	{
+	  std::cout << "Creating SDL software rendering surface...";
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
 			std::cerr << "Error initializing SDL!\n";
@@ -46,17 +47,11 @@ namespace Renderer
 		//have to reload config to re-open SDL joysticks
 		InputManager::loadConfig();
 
-
-
-		std::cout << "Creating surface...";
-
 		DISPMANX_ELEMENT_HANDLE_T dispman_element;
 		DISPMANX_DISPLAY_HANDLE_T dispman_display;
 		DISPMANX_UPDATE_HANDLE_T dispman_update;
 		VC_RECT_T dst_rect;
 		VC_RECT_T src_rect;
-
-
 
 		display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 		if(display == EGL_NO_DISPLAY)

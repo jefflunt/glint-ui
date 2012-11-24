@@ -18,7 +18,7 @@ namespace Renderer
 
 	bool createSurface() //unsigned int display_width, unsigned int display_height)
 	{
-		std::cout << "Creating surface...";
+		std::cout << "Creating SDL GL surface...";
 
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
@@ -36,7 +36,7 @@ namespace Renderer
 
 		if(sdlScreen == NULL)
 		{
-			std::cout << "Error creating SDL video surface!\n";
+			std::cout << "Error creating SDL GL video surface!\n";
 			return false;
 		}
 
