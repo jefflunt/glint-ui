@@ -59,6 +59,8 @@ void init(int argc, char* argv[]) {
   
   std::cout << "Processing config files...\n";
   processConfigOrDie();
+  
+  std::cout.flush();
 }
 
 void enableJoystick() {
