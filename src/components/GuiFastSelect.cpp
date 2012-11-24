@@ -6,7 +6,7 @@ const std::string GuiFastSelect::LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const int GuiFastSelect::SCROLLSPEED = 100;
 const int GuiFastSelect::SCROLLDELAY = 507;
 
-GuiFastSelect::GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, char startLetter, GuiBoxData data, int textcolor, Sound* scrollsound)
+GuiFastSelect::GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, char startLetter, GuiBoxData data, int textcolor)
 {
 	mLetterID = LETTERS.find(toupper(startLetter));
 	if(mLetterID == std::string::npos)
@@ -17,7 +17,6 @@ GuiFastSelect::GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, cha
 
 	mParent = parent;
 	mList = list;
-	mScrollSound = scrollsound;
 
 	mScrolling = false;
 	mScrollTimer = 0;
@@ -106,7 +105,6 @@ void GuiFastSelect::onTick(int deltaTime)
 void GuiFastSelect::scroll()
 {
 	setLetterID(mLetterID + mScrollOffset);
-	mScrollSound->play();
 }
 
 void GuiFastSelect::setLetterID(int id)
