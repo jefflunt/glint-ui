@@ -12,9 +12,6 @@ std::vector<SystemData*> SystemData::sSystemVector;
 
 namespace fs = boost::filesystem;
 
-extern bool PARSEGAMELISTONLY;
-extern bool IGNOREGAMELIST;
-
 std::string SystemData::getStartPath() { return mStartPath; }
 std::string SystemData::getExtension() { return mSearchExtension; }
 
@@ -44,11 +41,7 @@ SystemData::SystemData(std::string name, std::string startPath, std::string exte
 
 	mRootFolder = new FolderData(this, mStartPath, "Search Root");
 
-	if(!PARSEGAMELISTONLY)
-		populateFolder(mRootFolder);
-
-	if(!IGNOREGAMELIST)
-		parseGamelist(this);
+  parseGamelist(this);
 
 	mRootFolder->sort();
 }
@@ -97,60 +90,60 @@ void SystemData::launchGame(GameData* game)
 	SDL_JoystickEventState(1);
 }
 
-void SystemData::populateFolder(FolderData* folder)
-{
-	std::string folderPath = folder->getPath();
-	if(!fs::is_directory(folderPath))
-	{
-		std::cerr << "Error - folder with path \"" << folderPath << "\" is not a directory!\n";
-		return;
-	}
-
-	for(fs::directory_iterator end, dir(folderPath); dir != end; ++dir)
-	{
-		fs::path filePath = (*dir).path();
-
-		if(filePath.stem().string().empty())
-			continue;
-
-		if(fs::is_directory(filePath))
-		{
-			FolderData* newFolder = new FolderData(this, filePath.string(), filePath.stem().string());
-			populateFolder(newFolder);
-
-			//ignore folders that do not contain games
-			if(newFolder->getFileCount() == 0)
-				delete newFolder;
-			else
-				folder->pushFileData(newFolder);
-		}else{
-			//this is a little complicated because we allow a list of extensions to be defined (delimited with a space)
-			//we first get the extension of the file itself:
-			std::string extension = filePath.extension().string();
-			std::string chkExt;
-			size_t extPos = 0;
-
-			do {
-				//now we loop through every extension in the list
-				size_t cpos = extPos;
-				extPos = mSearchExtension.find(" ", extPos);
-				chkExt = mSearchExtension.substr(cpos, ((extPos == std::string::npos) ? mSearchExtension.length() - cpos: extPos - cpos));
-
-				//if it matches, add it
-				if(chkExt == extension)
-				{
-					GameData* newGame = new GameData(this, filePath.string(), filePath.stem().string());
-					folder->pushFileData(newGame);
-					break;
-				}else if(extPos != std::string::npos) //if not, add one to the "next position" marker to skip the space when reading the next extension
-				{
-					extPos++;
-				}
-
-			} while(extPos != std::string::npos && chkExt != "" && chkExt.find(".") != std::string::npos);
-		}
-	}
-}
+// void SystemData::populateFolder(FolderData* folder)
+// {
+//  std::string folderPath = folder->getPath();
+//  if(!fs::is_directory(folderPath))
+//  {
+//    std::cerr << "Error - folder with path \"" << folderPath << "\" is not a directory!\n";
+//    return;
+//  }
+// 
+//  for(fs::directory_iterator end, dir(folderPath); dir != end; ++dir)
+//  {
+//    fs::path filePath = (*dir).path();
+// 
+//    if(filePath.stem().string().empty())
+//      continue;
+// 
+//    if(fs::is_directory(filePath))
+//    {
+//      FolderData* newFolder = new FolderData(this, filePath.string(), filePath.stem().string());
+//      populateFolder(newFolder);
+// 
+//      //ignore folders that do not contain games
+//      if(newFolder->getFileCount() == 0)
+//        delete newFolder;
+//      else
+//        folder->pushFileData(newFolder);
+//    }else{
+//      //this is a little complicated because we allow a list of extensions to be defined (delimited with a space)
+//      //we first get the extension of the file itself:
+//      std::string extension = filePath.extension().string();
+//      std::string chkExt;
+//      size_t extPos = 0;
+// 
+//      do {
+//        //now we loop through every extension in the list
+//        size_t cpos = extPos;
+//        extPos = mSearchExtension.find(" ", extPos);
+//        chkExt = mSearchExtension.substr(cpos, ((extPos == std::string::npos) ? mSearchExtension.length() - cpos: extPos - cpos));
+// 
+//        //if it matches, add it
+//        if(chkExt == extension)
+//        {
+//          GameData* newGame = new GameData(this, filePath.string(), filePath.stem().string());
+//          folder->pushFileData(newGame);
+//          break;
+//        }else if(extPos != std::string::npos) //if not, add one to the "next position" marker to skip the space when reading the next extension
+//        {
+//          extPos++;
+//        }
+// 
+//      } while(extPos != std::string::npos && chkExt != "" && chkExt.find(".") != std::string::npos);
+//    }
+//  }
+// }
 
 
 std::string SystemData::getName()
