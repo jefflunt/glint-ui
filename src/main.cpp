@@ -25,7 +25,7 @@ unsigned int height = 0;
 void init(int argc, char* argv[]);
 namespace fs = boost::filesystem;
 void enableJoystick();
-void processConfig();
+void processConfigOrDie();
 void shutdown();
 void runFrontEnd();
 void processCmdLineArgs(int argc, char* argv[]);
@@ -41,7 +41,7 @@ bool configExistsButIsEmpty();
 // Start app
 int main(int argc, char* argv[]) {
   init(argc, argv);
-  while (keepRunning) { runFrontEnd() }
+  while (keepRunning) { runFrontEnd(); }
   shutdown();
   
 	return 0;
@@ -61,9 +61,9 @@ void enableJoystick() {
   SDL_JoystickEventState(SDL_ENABLE);
 }
 
-void processConfig() {
+void processConfigOrDie() {
   if (configSettingsDoNotExist())	{
-	  createDemoConfig()
+    createDemoConfig();
 	  keepRunning = false;
 
 	} else if (configExistsButIsEmpty()) {
@@ -97,7 +97,7 @@ void shutdown() {
 	std::cout << "EmulationStation cleanly shutting down...\n";
 
 	SDL_Quit();
-  ShutdownSound();
+  shutdownSound();
 }
 
 void runFrontEnd() {
@@ -158,7 +158,6 @@ void processCmdLineArgs(int argc, char* argv[]) {
 				std::cout << "--draw-framerate		display the framerate\n";
 				std::cout << "--help				summon a sentient, angry tuba\n\n";
 				std::cout << "More information available in README.md.\n";
-				return 0;
 			}
 		}
 	}
@@ -194,10 +193,11 @@ void ensureConfigDirectoryExists() {
 }
 
 void createDemoConfig() {
-  void configSettingsDoNotExist 
-  std::cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
-  SystemData::writeExampleConfig();
-  std::cerr << "Set it up, then re-run EmulationStation.\n";
+  if (configSettingsDoNotExist() {
+    std::cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
+    SystemData::writeExampleConfig();
+    std::cerr << "Set it up, then re-run glint-es.\n";
+  }
 }
 
 bool configSettingsDoNotExist() {
@@ -206,5 +206,5 @@ bool configSettingsDoNotExist() {
 
 bool configExistsButIsEmpty() {
   SystemData::loadConfig();
-  return SystemData::sSystemVector.size() == 0
+  return SystemData::sSystemVector.size() == 0;
 }
