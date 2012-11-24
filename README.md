@@ -1,11 +1,9 @@
 glint-es
 ========
 
-A graphical front-end for emulators with controller navigation. Developed both on and for the Raspbery Pi. Intended for use with **glint**-flavored projects, but it can easily be used with other emulators.
+A graphical front-end for emulators with controller navigation. Developed both on and for the Raspbery Pi. Intended for use with **glint**-flavored projects (such as [glint-nes](https://github.com/normalocity/glint-nes)), but it can easily be used with other emulators.
 
-glint-nes can be found here: https://github.com/normalocity/glint-nes
-
-I stand on the shoulders of giants (see CREDITS file). What contributions I have made are simply refinements to an already beautiful dream, created primarily by others.
+I stand on the shoulders of giants (see CREDITS file). What contributions I have made are simply refinements to an already beautiful dream.
 
 Building
 ========
