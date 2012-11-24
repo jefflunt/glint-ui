@@ -4,7 +4,6 @@
 #include "../GuiComponent.h"
 #include "../pugiXML/pugixml.hpp"
 #include "GuiBox.h"
-#include "../Sound.h"
 #include "../Font.h"
 
 //This class loads an XML-defined list of GuiComponents.
@@ -38,11 +37,6 @@ public:
 
 	GuiBoxData getBoxData();
 
-	Sound* getMenuScrollSound();
-	Sound* getMenuSelectSound();
-	Sound* getMenuBackSound();
-	Sound* getMenuOpenSound();
-
 	std::string getImageNotFoundPath();
 
 	Font* getListFont();
@@ -68,7 +62,6 @@ private:
 	bool mHideHeader, mHideDividers, mListCentered;
 	float mListOffsetX, mListTextOffsetX, mGameImageOffsetX, mGameImageOffsetY, mGameImageWidth, mGameImageHeight, mGameImageOriginX, mGameImageOriginY;
 	GuiBoxData mBoxData;
-	Sound mMenuScrollSound, mMenuSelectSound, mMenuBackSound, mMenuOpenSound;
 	std::string mImageNotFoundPath;
 	Font* mListFont;
 	Font* mDescFont;
