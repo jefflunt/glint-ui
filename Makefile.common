@@ -6,7 +6,7 @@ SRC_SOURCES=AudioManager.cpp FolderData.cpp Font.cpp GameData.cpp GuiComponent.c
 SOURCES=$(addprefix src/,$(SRC_SOURCES))
 OBJECTS=$(SOURCES:.cpp=.o)
 DEPS=$(SOURCES:.cpp=.d)
-EXECUTABLE=emulationstation
+EXECUTABLE=glint-es
 
 all: $(EXECUTABLE)
 
