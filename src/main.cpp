@@ -40,7 +40,7 @@ bool configExistsButIsEmpty();
 
 // Start app
 int main(int argc, char* argv[]) {
-  init();
+  init(argc, argv);
   while (keepRunning) { runFrontEnd() }
   shutdown();
   
