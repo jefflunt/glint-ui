@@ -10,7 +10,7 @@
 class GuiFastSelect : GuiComponent
 {
 public:
-	GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, char startLetter, GuiBoxData data, int textcolor, Sound* scrollsound);
+	GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, char startLetter, GuiBoxData data, int textcolor);
 	~GuiFastSelect();
 
 	void onRender();
@@ -35,8 +35,6 @@ private:
 
 	int mScrollTimer, mScrollOffset;
 	bool mScrolling;
-
-	Sound* mScrollSound;
 };
 
 #endif
