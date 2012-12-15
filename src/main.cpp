@@ -138,7 +138,7 @@ void runFrontEnd() {
 
 	GuiComponent::processTicks(deltaTime);
 	Renderer::render();
-  Renderer::drawRect(5, 5, 20, 20, 2147483647;
+  Renderer::drawRect(5, 5, 20, 20, 2147483647);
 
 	if (DRAWFRAMERATE) {
 		float framerate = 1/((float)deltaTime)*1000;
@@ -150,6 +150,7 @@ void runFrontEnd() {
 	}
 
 	Renderer::swapBuffers();
+	Renderer::drawRect(50, 50, 20, 20, 1073741824);
 }
 
 void processCmdLineArgs(int argc, char* argv[]) {
