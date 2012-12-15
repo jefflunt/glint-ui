@@ -18,7 +18,7 @@ namespace Renderer
 	void unregisterComponent(GuiComponent* comp);
 	void deleteAll();
 
-	bool init(int w, int h);
+	bool init();
 	void onInit();
 	void deinit();
 	void onDeinit();
