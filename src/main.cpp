@@ -113,6 +113,7 @@ void shutdown() {
 void runFrontEnd() {
   SDL_Event event;
   if (SDL_PollEvent(&event)) {
+    int eventTypeInt = event.type;
   	switch(event.type) {
   		case SDL_JOYHATMOTION:
   		case SDL_JOYAXISMOTION:
@@ -121,7 +122,6 @@ void runFrontEnd() {
   		case SDL_KEYDOWN:
   		case SDL_KEYUP:
   			InputManager::processEvent(&event);
-        int eventTypeInt = event.type;
         std::cout << "Input captured (" << eventTypeInt << ")\n";
         std::cout.flush();
   			break;
