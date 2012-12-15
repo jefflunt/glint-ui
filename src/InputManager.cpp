@@ -261,7 +261,7 @@ void InputManager::loadConfig()
 			{
 				if(strcmp(SDL_JoystickName(i), joystickName.c_str()) == 0)
 				{
-					std::cout << "opening joystick " << joystickName << "\n";
+					std::cout << "opening joystick (" << joystickName << ")...";
 					SDL_JoystickOpen(i);
 					break;
 				}

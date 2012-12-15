@@ -28,7 +28,7 @@ namespace Renderer
 
 	bool createSurface()
 	{
-	  std::cout << "Creating SDL software rendering surface...\n";
+	  std::cout << "Creating SDL software rendering surface...";
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
 			std::cerr << "Error initializing SDL!\n";
@@ -160,6 +160,7 @@ namespace Renderer
 	{
 		eglSwapBuffers(display, surface);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    std::cout << "RPI swapBuffers";
 	}
 
 	void destroySurface()
