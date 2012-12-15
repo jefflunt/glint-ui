@@ -111,9 +111,8 @@ void shutdown() {
 }
 
 void runFrontEnd() {
-  std::cout << "Starting front-end."
   SDL_Event event;
-  while(SDL_PollEvent(&event)) {
+  if (SDL_PollEvent(&event)) {
   	switch(event.type) {
   		case SDL_JOYHATMOTION:
   		case SDL_JOYAXISMOTION:
@@ -136,6 +135,7 @@ void runFrontEnd() {
 	lastTime = curTime;
 
 	GuiComponent::processTicks(deltaTime);
+  std::cout << "Rendered a frame.";
 	Renderer::render();
 
 	if (DRAWFRAMERATE) {
