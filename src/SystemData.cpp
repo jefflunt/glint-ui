@@ -81,7 +81,7 @@ void SystemData::launchGame(GameData* game)
 	if(exitCode != 0)
 		std::cout << "...launch terminated with nonzero exit code!\n";
 
-	Renderer::init(0, 0);
+	Renderer::init();
 
 	//re-enable SDL joystick events
 	SDL_JoystickEventState(1);
