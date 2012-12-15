@@ -29,7 +29,7 @@ void processConfigOrDie();
 void shutdown();
 void runFrontEnd();
 void processCmdLineArgs(int argc, char* argv[]);
-void initRendererOrDie(int width, int height);
+void initRendererOrDie();
 void ensureConfigDirectoryExists();
 void createDemoConfig();
 bool configSettingsDoNotExist();
