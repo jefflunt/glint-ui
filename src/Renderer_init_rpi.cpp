@@ -20,32 +20,35 @@ namespace Renderer
 
 	static EGL_DISPMANX_WINDOW_T nativewindow;
 
-	unsigned int display_width = 640;
-	unsigned int display_height = 480;
+	unsigned int display_width = 0;
+	unsigned int display_height = 0;
 
 	unsigned int getScreenWidth() { return display_width; }
 	unsigned int getScreenHeight() { return display_height; }
 
-	bool createSurface()
+	bool createSurface() //unsigned int display_width, unsigned int display_height)
 	{
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
+		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_AUDIO) != 0)
 		{
-			std::cerr << "1. SDL_INIT: Error initializing SDL library!\n";
+			std::cerr << "Error initializing SDL!\n";
 			std::cerr << SDL_GetError() << "\n";
-			std::cerr << "Are you in the 'video', and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
+			std::cerr << "Are you in the 'video', 'audio', and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
 			return false;
 		}
 
 		sdlScreen = SDL_SetVideoMode(1, 1, 0, SDL_SWSURFACE);
-		if(
-		 == NULL)
+		if(sdlScreen == NULL)
 		{
-			std::cerr << "2. SET_VIDEO_MODE: Error creating SDL window for input!\n";
+			std::cerr << "Error creating SDL window for input!\n";
 			return false;
 		}
 
 		//have to reload config to re-open SDL joysticks
 		InputManager::loadConfig();
+
+
+
+		std::cout << "Creating surface...";
 
 		DISPMANX_ELEMENT_HANDLE_T dispman_element;
 		DISPMANX_DISPLAY_HANDLE_T dispman_display;
@@ -53,24 +56,26 @@ namespace Renderer
 		VC_RECT_T dst_rect;
 		VC_RECT_T src_rect;
 
+
+
 		display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 		if(display == EGL_NO_DISPLAY)
 		{
-			std::cerr << "3. GET_DISPLAY: Error getting display!\n";
+			std::cerr << "Error getting display!\n";
 			return false;
 		}
 
 		bool result = eglInitialize(display, NULL, NULL);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "4. EGL_INIT: Error initializing display!\n";
+			std::cerr << "Error initializing display!\n";
 			return false;
 		}
 
 		result = eglBindAPI(EGL_OPENGL_ES_API);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "5. BIND_API: Error binding API!\n";
+			std::cerr << "Error binding API!\n";
 			return false;
 		}
 
@@ -90,7 +95,7 @@ namespace Renderer
 
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "6. Error choosing config!\n";
+			std::cerr << "Error choosing config!\n";
 			return false;
 		}
 
@@ -98,9 +103,9 @@ namespace Renderer
 		context = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
 		if(context == EGL_NO_CONTEXT)
 		{
-			std::cout << "7. Error: " << eglGetError() << "\n";
+			std::cout << "Error: " << eglGetError() << "\n";
 
-			std::cerr << "8. Error getting context!\n";
+			std::cerr << "Error getting context!\n";
 			return false;
 		}
 
@@ -113,12 +118,11 @@ namespace Renderer
 
 			if(success < 0)
 			{
-				std::cerr << "9. Error getting display size!\n";
+				std::cerr << "Error getting display size!\n";
 				return false;
 			}
 		}
 
-    std::cout << "OK\n";
 		std::cout << display_width << "x" << display_height << "...";
 
 
@@ -137,21 +141,25 @@ namespace Renderer
 		nativewindow.width = display_width; nativewindow.height = display_height;
 		vc_dispmanx_update_submit_sync(dispman_update);
 
+
+
+
 		surface = eglCreateWindowSurface(display, config, &nativewindow, NULL);
 		if(surface == EGL_NO_SURFACE)
 		{
-			std::cerr << "10. Error creating window surface!\n";
+			std::cerr << "Error creating window surface!\n";
 			return false;
 		}
 
 		result = eglMakeCurrent(display, surface, surface, context);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "11. Error with eglMakeCurrent!\n";
+			std::cerr << "Error with eglMakeCurrent!\n";
 			return false;
 		}
 
-		std::cout << "OK\n";
+
+		std::cout << "success!\n";
 
 		return true;
 	}
