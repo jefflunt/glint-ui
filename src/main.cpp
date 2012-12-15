@@ -121,7 +121,8 @@ void runFrontEnd() {
   		case SDL_KEYDOWN:
   		case SDL_KEYUP:
   			InputManager::processEvent(&event);
-        std::cout << "Input captured (" << event.type << ")\n";
+        int eventTypeInt = event.type;
+        std::cout << "Input captured (" << eventTypeInt << ")\n";
         std::cout.flush();
   			break;
 
