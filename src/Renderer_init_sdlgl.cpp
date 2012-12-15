@@ -58,8 +58,6 @@ namespace Renderer
 	{
 		SDL_GL_SwapBuffers();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		std::cout << "SDL swapBuffers";
-    std::cout.flush();
 	}
 
 	void destroySurface()
