@@ -135,7 +135,6 @@ void runFrontEnd() {
 	lastTime = curTime;
 
 	GuiComponent::processTicks(deltaTime);
-  std::cout << "Rendered a frame.";
 	Renderer::render();
 
 	if (DRAWFRAMERATE) {
