@@ -15,8 +15,9 @@
 
 #include <sstream>
 
-bool DRAWFRAMERATE = false;
+bool DRAWFRAMERATE = true;
 bool keepRunning = true;
+int lastTime = 0;
 unsigned int width = 0;
 unsigned int height = 0;
 
@@ -111,10 +112,9 @@ void shutdown() {
 
 void runFrontEnd() {
   std::cout << "Starting front-end."
-  int lastTime = 0;
   SDL_Event event;
-  SDL_PollEvent(&event);
-
+  SDL_PollEvent(&event)
+//	while(SDL_PollEvent(&event)) {
 	switch(event.type) {
 		case SDL_JOYHATMOTION:
 		case SDL_JOYAXISMOTION:
@@ -130,6 +130,7 @@ void runFrontEnd() {
 			keepRunning = false;
 			break;
 	}
+//	}
 
 	int curTime = SDL_GetTicks();
 	int deltaTime = curTime - lastTime;
