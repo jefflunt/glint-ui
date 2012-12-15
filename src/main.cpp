@@ -138,7 +138,7 @@ void runFrontEnd() {
 
 	GuiComponent::processTicks(deltaTime);
 	Renderer::render();
-  Renderer::drawRect(5, 5, 20, 20);
+  Renderer::drawRect(5, 5, 20, 20, 2147483647;
 
 	if (DRAWFRAMERATE) {
 		float framerate = 1/((float)deltaTime)*1000;
