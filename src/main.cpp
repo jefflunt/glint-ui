@@ -112,7 +112,7 @@ void shutdown() {
 
 void runFrontEnd() {
   SDL_Event event;
-  if (SDL_PollEvent(&event)) {
+  while (SDL_PollEvent(&event)) {
     int eventTypeInt = event.type;
   	switch(event.type) {
   		case SDL_JOYHATMOTION:
@@ -138,6 +138,7 @@ void runFrontEnd() {
 
 	GuiComponent::processTicks(deltaTime);
 	Renderer::render();
+  Renderer::drawRect(5, 5, 20, 20);
 
 	if (DRAWFRAMERATE) {
 		float framerate = 1/((float)deltaTime)*1000;
