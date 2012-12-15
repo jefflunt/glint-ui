@@ -26,7 +26,7 @@ namespace Renderer
 	unsigned int getScreenWidth() { return display_width; }
 	unsigned int getScreenHeight() { return display_height; }
 
-	bool createSurface() //unsigned int display_width, unsigned int display_height)
+	bool createSurface()
 	{
 	  std::cout << "Creating SDL software rendering surface...\n";
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
@@ -118,6 +118,7 @@ namespace Renderer
 			}
 		}
 
+    std::cout << "OK\n"
 		std::cout << display_width << "x" << display_height << "...";
 
 
@@ -136,9 +137,6 @@ namespace Renderer
 		nativewindow.width = display_width; nativewindow.height = display_height;
 		vc_dispmanx_update_submit_sync(dispman_update);
 
-
-
-
 		surface = eglCreateWindowSurface(display, config, &nativewindow, NULL);
 		if(surface == EGL_NO_SURFACE)
 		{
@@ -153,8 +151,7 @@ namespace Renderer
 			return false;
 		}
 
-
-		std::cout << "success!\n";
+		std::cout << "OK\n";
 
 		return true;
 	}

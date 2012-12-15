@@ -45,20 +45,25 @@ int main(int argc, char* argv[]) {
 }
 
 void init(int argc, char* argv[]) {
-  std::cout << "Processing command line args...\n";
+  std::cout << "Processing command line args...";
   processCmdLineArgs(argc, argv);
+  std::cout << "OK\n"
   
-  std::cout << "Starting renderer...\n";
+  std::cout << "Starting renderer...";
   initRendererOrDie(width, height);
+  std::cout << "OK\n"
   
-  std::cout << "Enabling joystick...\n";
+  std::cout << "Enabling joystick...";
   enableJoystick();
+  std::cout << "OK\n"
   
-  std::cout << "Checking for existence of config directory and files...\n";
+  std::cout << "Checking for existence of config directory and files...";
   ensureConfigDirectoryExists();
+  std::cout << "OK\n"
   
-  std::cout << "Processing config files...\n";
+  std::cout << "Processing config files...";
   processConfigOrDie();
+  std::cout << "OK\n"
   
   std::cout.flush();
 }
@@ -105,24 +110,25 @@ void shutdown() {
 }
 
 void runFrontEnd() {
+  std::cout << "Starting front-end."
   int lastTime = 0;
   SDL_Event event;
-	while(SDL_PollEvent(&event)) {
-		switch(event.type) {
-			case SDL_JOYHATMOTION:
-			case SDL_JOYAXISMOTION:
-			case SDL_JOYBUTTONDOWN:
-			case SDL_JOYBUTTONUP:
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-				InputManager::processEvent(&event);
-        std::cout << "Input captured (" << event.type << ")\n";
-				break;
+  SDL_PollEvent(&event);
 
-			case SDL_QUIT:
-				keepRunning = false;
-				break;
-		}
+	switch(event.type) {
+		case SDL_JOYHATMOTION:
+		case SDL_JOYAXISMOTION:
+		case SDL_JOYBUTTONDOWN:
+		case SDL_JOYBUTTONUP:
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+			InputManager::processEvent(&event);
+      std::cout << "Input captured (" << event.type << ")\n";
+			break;
+
+		case SDL_QUIT:
+			keepRunning = false;
+			break;
 	}
 
 	int curTime = SDL_GetTicks();
