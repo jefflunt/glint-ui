@@ -118,7 +118,7 @@ namespace Renderer
 			}
 		}
 
-    std::cout << "OK\n"
+    std::cout << "OK\n";
 		std::cout << display_width << "x" << display_height << "...";
 
 
