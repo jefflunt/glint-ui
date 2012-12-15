@@ -28,19 +28,19 @@ namespace Renderer
 
 	bool createSurface()
 	{
-	  std::cout << "Creating SDL software rendering surface...";
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
-			std::cerr << "Error initializing SDL!\n";
+			std::cerr << "1. SDL_INIT: Error initializing SDL library!\n";
 			std::cerr << SDL_GetError() << "\n";
 			std::cerr << "Are you in the 'video', and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
 			return false;
 		}
 
 		sdlScreen = SDL_SetVideoMode(1, 1, 0, SDL_SWSURFACE);
-		if(sdlScreen == NULL)
+		if(
+		 == NULL)
 		{
-			std::cerr << "Error creating SDL window for input!\n";
+			std::cerr << "2. SET_VIDEO_MODE: Error creating SDL window for input!\n";
 			return false;
 		}
 
@@ -56,21 +56,21 @@ namespace Renderer
 		display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 		if(display == EGL_NO_DISPLAY)
 		{
-			std::cerr << "Error getting display!\n";
+			std::cerr << "3. GET_DISPLAY: Error getting display!\n";
 			return false;
 		}
 
 		bool result = eglInitialize(display, NULL, NULL);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error initializing display!\n";
+			std::cerr << "4. EGL_INIT: Error initializing display!\n";
 			return false;
 		}
 
 		result = eglBindAPI(EGL_OPENGL_ES_API);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error binding API!\n";
+			std::cerr << "5. BIND_API: Error binding API!\n";
 			return false;
 		}
 
@@ -90,7 +90,7 @@ namespace Renderer
 
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error choosing config!\n";
+			std::cerr << "6. Error choosing config!\n";
 			return false;
 		}
 
@@ -98,9 +98,9 @@ namespace Renderer
 		context = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
 		if(context == EGL_NO_CONTEXT)
 		{
-			std::cout << "Error: " << eglGetError() << "\n";
+			std::cout << "7. Error: " << eglGetError() << "\n";
 
-			std::cerr << "Error getting context!\n";
+			std::cerr << "8. Error getting context!\n";
 			return false;
 		}
 
@@ -113,7 +113,7 @@ namespace Renderer
 
 			if(success < 0)
 			{
-				std::cerr << "Error getting display size!\n";
+				std::cerr << "9. Error getting display size!\n";
 				return false;
 			}
 		}
@@ -140,14 +140,14 @@ namespace Renderer
 		surface = eglCreateWindowSurface(display, config, &nativewindow, NULL);
 		if(surface == EGL_NO_SURFACE)
 		{
-			std::cerr << "Error creating window surface!\n";
+			std::cerr << "10. Error creating window surface!\n";
 			return false;
 		}
 
 		result = eglMakeCurrent(display, surface, surface, context);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error with eglMakeCurrent!\n";
+			std::cerr << "11. Error with eglMakeCurrent!\n";
 			return false;
 		}
 
