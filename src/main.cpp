@@ -151,32 +151,8 @@ void runFrontEnd() {
 	Renderer::swapBuffers();
 }
 
-void processCmdLineArgs(int argc, char* argv[]) {
-  if(argc > 1) {
-		for(int i = 1; i < argc; i++) {
-			if(strcmp(argv[i], "-w") == 0) {
-				width = atoi(argv[i + 1]);
-				i++;
-			} else if(strcmp(argv[i], "-h") == 0) {
-				height = atoi(argv[i + 1]);
-				i++;
-			} else if(strcmp(argv[i], "--draw-framerate") == 0) {
-				DRAWFRAMERATE = true;
-			} else if(strcmp(argv[i], "--help") == 0) {
-				std::cout << "EmulationStation, a graphical front-end for ROM browsing.\n";
-				std::cout << "Command line arguments:\n";
-				std::cout << "-w [width in pixels]		set screen width\n";
-				std::cout << "-h [height in pixels]		set screen height\n";
-				std::cout << "--draw-framerate		display the framerate\n";
-				std::cout << "--help				summon a sentient, angry tuba\n\n";
-				std::cout << "More information available in README.md.\n";
-			}
-		}
-	}
-}
-
-void initRendererOrDie(int width, int height) {
-  bool renderInitSuccessful = Renderer::init(width, height);
+void initRendererOrDie() {
+  bool renderInitSuccessful = Renderer::init();
 	if(!renderInitSuccessful) {
 		std::cerr << "Error initializing renderer!\n";
 		exit(1);

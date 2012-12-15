@@ -20,19 +20,19 @@ namespace Renderer
 
 	static EGL_DISPMANX_WINDOW_T nativewindow;
 
-	unsigned int display_width = 0;
-	unsigned int display_height = 0;
+	unsigned int display_width;
+	unsigned int display_height;
 
 	unsigned int getScreenWidth() { return display_width; }
 	unsigned int getScreenHeight() { return display_height; }
 
 	bool createSurface() //unsigned int display_width, unsigned int display_height)
 	{
-		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_AUDIO) != 0)
+		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
 			std::cerr << "Error initializing SDL!\n";
 			std::cerr << SDL_GetError() << "\n";
-			std::cerr << "Are you in the 'video', 'audio', and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
+			std::cerr << "Are you in the 'video' and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
 			return false;
 		}
 
@@ -187,13 +187,8 @@ namespace Renderer
 		SDL_Quit();
 	}
 
-	bool init(int w, int h)
+	bool init()
 	{
-		if(w)
-			display_width = w;
-		if(h)
-			display_height = h;
-
 		bool createdSurface = createSurface();
 
 		if(!createdSurface)
