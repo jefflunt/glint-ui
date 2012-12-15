@@ -46,12 +46,8 @@ int main(int argc, char* argv[]) {
 }
 
 void init(int argc, char* argv[]) {
-  std::cout << "Processing command line args...";
-  processCmdLineArgs(argc, argv);
-  std::cout << "OK\n";
-  
   std::cout << "Starting renderer...";
-  initRendererOrDie(width, height);
+  initRendererOrDie();
   std::cout << "OK\n";
   
   std::cout << "Enabling joystick...";
