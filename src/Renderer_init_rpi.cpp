@@ -28,6 +28,18 @@ namespace Renderer
 
 	bool createSurface() //unsigned int display_width, unsigned int display_height)
 	{
+	  if(!display_width || !display_height)
+		{
+			bool success = graphics_get_display_size(0, &display_width, &display_height); //0 = LCD
+
+			if(success < 0)
+			{
+				std::cerr << "Error getting display size!\n";
+				return false;
+			}
+		}
+		std::cout << display_width << "x" << display_height << "...";
+	  
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
 			std::cerr << "Error initializing SDL!\n";
@@ -108,23 +120,6 @@ namespace Renderer
 			std::cerr << "Error getting context!\n";
 			return false;
 		}
-
-
-
-
-		if(!display_width || !display_height)
-		{
-			bool success = graphics_get_display_size(0, &display_width, &display_height); //0 = LCD
-
-			if(success < 0)
-			{
-				std::cerr << "Error getting display size!\n";
-				return false;
-			}
-		}
-
-		std::cout << display_width << "x" << display_height << "...";
-
 
 		dst_rect.x = 0; dst_rect.y = 0;
 		dst_rect.width = display_width; dst_rect.height = display_height;
