@@ -1,7 +1,7 @@
 glint-es
 ========
 
-A graphical front-end for emulators with controller navigation. Developed both on and for the Raspbery Pi. Intended for use with **glint**-flavored projects (such as [glint-nes](https://github.com/normalocity/glint-nes)), but it can easily be used with other emulators.
+A graphical frontend for emulators with controller navigation. Developed both on and for the Raspbery Pi. Intended for use with **glint**-flavored projects (such as [glint-nes](https://github.com/normalocity/glint-nes)), but it can easily be used with other emulators.
 
 I stand on the shoulders of giants (see CREDITS file). What contributions I have made are simply refinements to an already beautiful dream.
 
@@ -10,13 +10,14 @@ Building
 
 **On the Raspberry Pi:**
 
-glint-es has a few dependencies. For building, you'll need SDL 1.2, FreeImage, FreeType, and Boost.Filesystem, which can easily be obtained with apt-get:
+glint-es has a few dependencies, so kindly install them:
 ```
 sudo apt-get install libsdl1.2-dev libboost-filesystem-dev libfreeimage-dev libfreetype6-dev
 ```
 
-There are also a few libraries already on the RPi (located in /opt/vc/, like the Broadcom libraries, EGL, and GLES). You can build glint-es by simply running `make`.
+There are also a few libraries already on the RPi (located in /opt/vc/, like the Broadcom libraries, EGL, and GLES).
 
+You can build glint-es by simply running `make` from the `glint-es` directory. You should get an executable (also called **glint-nes**) runs the frontend.
 
 **On something else (desktop):**
 
@@ -47,51 +48,26 @@ glint-es will return once your system's command terminates (i.e. your emulator c
 
 **Keyboard mappings:**
 
-Up - Scroll up
-
-Down - Scroll down
-
-Left - Last system (if it exists)
-
-Right - Next system (if it exists)
-
-Enter - Select
-
-Escape - Back out of a folder
-
-F1 - Open the restart/shutdown system menu
-
-F2 - Open the fast select dialog
-
-F4 - Close glint-es (should work as long as ES hasn't frozen)
+    Up - Scroll up
+    Down - Scroll down
+    Left - Last system (if it exists)
+    Right - Next system (if it exists)
+    Enter - Select
+    Escape - Back out of a folder
+    F1 - Open the restart/shutdown system menu
+    F2 - Open the fast select dialog
+    F4 - Close glint-es (should work as long as ES hasn't frozen)
 
 Unfortunately, there is no built-in way to change keyboard mappings - if you need to, check out `src/InputManager.cpp`. There's a switch statement with a list of keys; it should be pretty simple to change them.
+
+What, you want a config file so you can change it without recompiling? Pish posh - I'm working on it.
 
 gamelist.xml
 ============
 
-If a file named gamelist.xml is found in the root of a system's search directory, it will be parsed and the detailed GuiGameList will be used. This means you can define images, descriptions, and different names for files. Note that only standard ASCII characters are supported (if you see a weird [X] symbol, you're probably using unicode!).
-Images will be automatically resized to fit within the left column of the screen. Smaller images will load faster, so try to keep your resolution low.
-An example gamelist.xml:
-```
-<gameList>
-	<game>
-		<path>/home/pi/ROMs/nes/mm2.nes</path>
-		<name>Mega Man 2</name>
-		<desc>Mega Man 2 is a classic NES game which follows Mega Man as he murders eight robot masters.</desc>
-		<image>/home/pi/Screenshots/megaman2.png</image>
-	</game>
-</gameList>
-```
-
-The path element should be the absolute path of the ROM. Special characters SHOULD NOT be escaped. The image element is the absolute path to an image to display above the description (like a screenshot or boxart). Most formats can be used (including png, jpg, gif, etc.). Not all elements need to be used.
-
-The switch `--gamelist-only` can be used to skip automatic searching, and only display games defined in the system's gamelist.xml.
-The switch `--ignore-gamelist` can be used to ignore the gamelist and use the non-detailed view.
-
-**Making a gamelist.xml by hand sucks, so a cool guy named Pendor made a python script which automatically generates a gamelist.xml for you, with boxart automatically downloaded. It can be found here:** https://github.com/elpendor/ES-scraper
+**glint-es** does away with the XML games list, preferring simply to store all ROMs in a known directory.
 
 Themes
 ======
 
-Being based wholly on EmulationStation, glint-es is themed in the same same, should you prefer to theme it with your custom look and feel.
+Being based wholly on EmulationStation, glint-es is themed in the same way, should you prefer to theme it with your custom look and feel.
