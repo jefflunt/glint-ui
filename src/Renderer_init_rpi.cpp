@@ -28,6 +28,7 @@ namespace Renderer
 
 	bool createSurface() //unsigned int display_width, unsigned int display_height)
 	{
+    bcm_host_init();
 	  if(!display_width || !display_height)
 		{
 			bool success = graphics_get_display_size(0, &display_width, &display_height); //0 = LCD
