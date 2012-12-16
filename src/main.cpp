@@ -15,7 +15,7 @@
 
 #include <sstream>
 
-bool DRAWFRAMERATE = true;
+bool DRAWFRAMERATE = false;
 bool keepRunning = true;
 int lastTime = 0;
 unsigned int width = 0;
