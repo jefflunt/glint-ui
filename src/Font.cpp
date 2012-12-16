@@ -14,7 +14,7 @@ int Font::getSize() { return mSize; }
 
 std::string Font::getDefaultPath()
 {
-	return "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSerif.ttf";
+	return "/usr/share/fonts/truetype/glint-font.ttf";
 }
 
 void Font::initLibrary()

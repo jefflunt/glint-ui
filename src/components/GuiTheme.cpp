@@ -71,11 +71,11 @@ void GuiTheme::setDefaults()
 	mListSelectedColor = 0xFF0000FF;
 	mDescColor = 0x0000FFFF;
 	mFastSelectColor = 0xFF0000FF;
-	mHideHeader = false;
-	mHideDividers = false;
-	mListCentered = true;
+	mHideHeader = true;
+	mHideDividers = true;
+	mListCentered = false;
 
-	mListOffsetX = 0.5;
+	mListOffsetX = 0.1;
 	mListTextOffsetX = 0.005;
 
 	mGameImageOriginX = 0.5;
@@ -86,7 +86,7 @@ void GuiTheme::setDefaults()
 	mGameImageHeight = 0;
 
 	mBoxData.backgroundPath = "";
-	mBoxData.backgroundTiled = false;
+	mBoxData.backgroundTiled = true;
 	mBoxData.horizontalPath = "";
 	mBoxData.horizontalTiled = false;
 	mBoxData.verticalPath = "";
