@@ -275,6 +275,6 @@ void InputManager::loadConfig()
 std::string InputManager::getConfigPath()
 {
 	std::string home = getenv("HOME");
-	home += "/.emulationstation/es_input.cfg";
+	home += "/.glint-es/es_input.cfg";
 	return home;
 }

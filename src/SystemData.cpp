@@ -279,7 +279,7 @@ std::string SystemData::getConfigPath()
 		return "";
 	}
 
-	return(home + "/.emulationstation/es_systems.cfg");
+	return(home + "/.glint-es/es_systems.cfg");
 }
 
 FolderData* SystemData::getRootFolder()

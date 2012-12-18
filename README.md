@@ -31,11 +31,11 @@ You'll also need OpenGL. I don't know the proper package name, but you'll need `
 Configuring
 ===========
 
-**~/.emulationstation/es_systems.cfg:**
-When first run, an example systems configuration file will be created at $HOME/.emulationstation/es_systems.cfg. This example has some comments explaining how to write the configuration file, and an example RetroArch launch command. Keep in mind you can define more than one system! Just use all the variables again. Also, you can use multiple extensions - just separate them with a space, e.g.: ".nes .NES .bin".
+**~/.glint-es/es_systems.cfg:**
+When first run, an example systems configuration file will be created at $HOME/.glint-es/es_systems.cfg. This example has some comments explaining how to write the configuration file, and an example RetroArch launch command. Keep in mind you can define more than one system! Just use all the variables again. Also, you can use multiple extensions - just separate them with a space, e.g.: ".nes .NES .bin".
 
-If an SDL Joystick is detected at startup, and $HOME/.emulationstation/es_input.cfg doesn't exist, an Input Configuration screen will appear instead of the game list.
-This should be pretty self-explanatory. If you want to reconfigure, just delete $HOME/.emulationstation/es_input.cfg.
+If an SDL Joystick is detected at startup, and $HOME/.glint-es/es_input.cfg doesn't exist, an Input Configuration screen will appear instead of the game list.
+This should be pretty self-explanatory. If you want to reconfigure, just delete $HOME/.glint-es/es_input.cfg.
 
 Mappings will be applied to the first joystick with the same name as the joystick you configured.
 An Xbox 360 controller with the xboxdrv driver was used for testing. POV hats are automatically mapped to directions (so if you're not using an analog stick, you'll need to skip mapping Up/Down/Left/Right by pressing a keyboard key).

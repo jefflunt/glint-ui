@@ -157,7 +157,7 @@ void initRendererOrDie() {
 
 void ensureConfigDirectoryExists() {
   std::string home = getenv("HOME");
-	std::string configDir = home + "/.emulationstation";
+	std::string configDir = home + "/.glint-es";
 	if(!fs::exists(configDir)) {
 		std::cout << "Creating config directory \"" << configDir << "\"\n";
 		fs::create_directory(configDir);
