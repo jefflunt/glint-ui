@@ -56,7 +56,7 @@ void GuiMenu::populateList()
 	//commands added here are called with system() when selected (so are executed as shell commands)
 	//the method is GuiList::addObject(std::string displayString, std::string commandString, unsigned int displayHexColor);
 	//the list will automatically adjust as items are added to it, this should be the only area you need to change
-	mList->addObject("Restart", "shutdown -r now", 0x0000FFFF);
+	mList->addObject("Exit", "pkill glint-es", 0x0000FFFF);
 }
 
 void GuiMenu::onRender()
