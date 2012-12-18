@@ -1,5 +1,4 @@
 #include "Renderer.h"
-#include <bcm_host.h>
 #include <iostream>
 #include <bcm_host.h>
 #include <GLES/gl.h>
