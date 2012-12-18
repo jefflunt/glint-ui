@@ -67,6 +67,17 @@ void init(int argc, char* argv[]) {
   std::cout.flush();
 }
 
+void shutdown() {
+	Renderer::deleteAll();
+	Renderer::deinit();
+	SystemData::deleteSystems();
+  bcm_host_deinit();
+  
+	std::cout << "EmulationStation cleanly shutting down...\n";
+
+	SDL_Quit();
+}
+
 void enableJoystick() {
   SDL_JoystickEventState(SDL_ENABLE);
 }
@@ -96,17 +107,6 @@ void processConfigOrDie() {
 
 		}
 	}
-}
-
-void shutdown() {
-	Renderer::deleteAll();
-	Renderer::deinit();
-	SystemData::deleteSystems();
-  bcm_host_deinit();
-  
-	std::cout << "EmulationStation cleanly shutting down...\n";
-
-	SDL_Quit();
 }
 
 void runFrontEnd() {
