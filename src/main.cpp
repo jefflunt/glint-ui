@@ -112,7 +112,6 @@ void shutdown() {
 void runFrontEnd() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
-    int eventTypeInt = event.type;
   	switch(event.type) {
   		case SDL_JOYHATMOTION:
   		case SDL_JOYAXISMOTION:
