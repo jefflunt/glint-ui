@@ -46,6 +46,8 @@ int main(int argc, char* argv[]) {
 }
 
 void init(int argc, char* argv[]) {
+  bcm_host_init();
+  
   std::cout << "Starting renderer...";
   initRendererOrDie();
   std::cout << "OK\n";
@@ -100,7 +102,8 @@ void shutdown() {
 	Renderer::deleteAll();
 	Renderer::deinit();
 	SystemData::deleteSystems();
-
+  bcm_host_deinit();
+  
 	std::cout << "EmulationStation cleanly shutting down...\n";
 
 	SDL_Quit();
