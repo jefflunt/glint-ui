@@ -19,8 +19,8 @@ namespace Renderer
 
 	static EGL_DISPMANX_WINDOW_T nativewindow;
 
-	unsigned int display_width = 640;
-	unsigned int display_height = 480;
+	unsigned int display_width;
+	unsigned int display_height;
 
 	unsigned int getScreenWidth() { return display_width; }
 	unsigned int getScreenHeight() { return display_height; }
