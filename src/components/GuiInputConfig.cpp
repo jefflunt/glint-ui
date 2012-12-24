@@ -38,17 +38,17 @@ void GuiInputConfig::onRender()
 {
 	Renderer::drawRect(0, 0, Renderer::getScreenWidth(), Renderer::getScreenHeight(), 0xFFFFFFFF);
 
-	Font* font = Renderer::getDefaultFont(Renderer::MEDIUM);
+	Font* font = Renderer::getDefaultFont(Renderer::SMALL);
 
 	int height = font->getHeight() + 6;
 
 
-	Renderer::drawText("Configure your controller...", 20, 20, 0x000000FF, font);
+	Renderer::drawText("Configure controller:", 20, 20, 0x000000FF, font);
 
 	if(mDone)
 		Renderer::drawText("All done! Press a keyboard key to save.", 0, height * 5, 0x00BB00FF, font);
 	else
-		Renderer::drawText("Please press the axis/button for " + sInputs[mInputNum], 0, height * 5, 0x00C000FF, font);
+		Renderer::drawText("Press " + sInputs[mInputNum], 0, height * 5, 0x00C000FF, font);
 }
 
 void GuiInputConfig::onInput(InputManager::InputButton button, bool keyDown)
