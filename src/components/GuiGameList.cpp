@@ -94,13 +94,13 @@ void GuiGameList::onRender()
 
 	//header
 	if(!mTheme->getHeaderHidden())
-		Renderer::drawCenteredText(mSystem->getName(), 0, 1, 0xFF0000FF, Renderer::getDefaultFont(Renderer::LARGE));
+		Renderer::drawCenteredText(mSystem->getName(), 0, 1, 0xFF0000FF, Renderer::getDefaultFont(Renderer::MEDIUM));
 
 	if(mDetailed)
 	{
 		//divider
 		if(!mTheme->getDividersHidden())
-			Renderer::drawRect(Renderer::getScreenWidth() * mTheme->getListOffsetX() - 4, Renderer::getDefaultFont(Renderer::LARGE)->getHeight() + 2, 8, Renderer::getScreenHeight(), 0x0000FFFF);
+			Renderer::drawRect(Renderer::getScreenWidth() * mTheme->getListOffsetX() - 4, Renderer::getDefaultFont(Renderer::MEDIUM)->getHeight() + 2, 8, Renderer::getScreenHeight(), 0x0000FFFF);
 
 		//if we're not scrolling and we have selected a non-folder
 		if(!mList->isScrolling() && mList->getSelectedObject() && !mList->getSelectedObject()->isFolder())
