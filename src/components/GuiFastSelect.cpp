@@ -50,7 +50,7 @@ void GuiFastSelect::onRender()
 
 	mBox->render();
 
-	Renderer::drawCenteredText(LETTERS.substr(mLetterID, 1), 0, sh * 0.5 - (Renderer::getDefaultFont(Renderer::LARGE)->getHeight() * 0.5), mTextColor, Renderer::getDefaultFont(Renderer::LARGE));
+	Renderer::drawCenteredText(LETTERS.substr(mLetterID, 1), 0, sh * 0.5 - (Renderer::getDefaultFont(Renderer::MEDIUM)->getHeight() * 0.5), mTextColor, Renderer::getDefaultFont(Renderer::MEDIUM));
 }
 
 void GuiFastSelect::onInput(InputManager::InputButton button, bool keyDown)
