@@ -7,7 +7,7 @@ GuiMenu::GuiMenu(GuiComponent* parent)
 	parent->pause();
 
 	mList = new GuiList<std::string>(0, Renderer::getDefaultFont(Renderer::MEDIUM)->getHeight() + 2, Renderer::getDefaultFont(Renderer::MEDIUM));
-	mList->setSelectedTextColor(0x0000FFFF);
+	mList->setSelectedTextColor(0xFFFFFFFF);
 	populateList();
 	addChild(mList);
 

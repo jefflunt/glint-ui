@@ -18,7 +18,7 @@ GuiList<listType>::GuiList(int offsetX, int offsetY, Font* font)
 
 	mFont = font;
 	mSelectorColor = 0x000000FF;
-	mSelectedTextColorOverride = 0x0000FFFF;
+	mSelectedTextColorOverride = 0xFFFFFFFF;
 	mDrawCentered = true;
 
 	InputManager::registerComponent(this);
