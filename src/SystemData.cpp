@@ -207,13 +207,7 @@ void SystemData::loadConfig()
 				if(!sysName.empty() && !sysPath.empty() &&!sysExtension.empty() && !sysCommand.empty())
 				{
 					SystemData* newSystem = new SystemData(sysName, sysPath, sysExtension, sysCommand);
-          // if(newSystem->getRootFolder()->getFileCount() == 0)
-          // {
-          //  std::cout << "System \"" << sysName << "\" has no games! Deleting.\n";
-          //  delete newSystem;
-          // }else{
-						sSystemVector.push_back(newSystem);
-          // }
+					sSystemVector.push_back(newSystem);
 
 					//reset the variables for the next block (should there be one)
 					sysName = ""; sysPath = ""; sysExtension = ""; sysCommand = "";
