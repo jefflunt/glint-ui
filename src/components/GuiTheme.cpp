@@ -34,7 +34,7 @@ std::string GuiTheme::getImageNotFoundPath() { return mImageNotFoundPath; }
 Font* GuiTheme::getListFont()
 {
 	if(mListFont == NULL)
-		return Renderer::getDefaultFont(Renderer::MEDIUM);
+		return Renderer::getDefaultFont(Renderer::SMALL);
 	else
 		return mListFont;
 }
@@ -193,7 +193,7 @@ void GuiTheme::readXML(std::string path)
 	mImageNotFoundPath = expandPath(root.child("gameImageNotFound").text().get());
 
 	//fonts
-	mListFont = resolveFont(root.child("listFont"), Font::getDefaultPath(), Renderer::getDefaultFont(Renderer::MEDIUM)->getSize());
+	mListFont = resolveFont(root.child("listFont"), Font::getDefaultPath(), Renderer::getDefaultFont(Renderer::SMALL)->getSize());
 	mDescFont = resolveFont(root.child("descriptionFont"), Font::getDefaultPath(), Renderer::getDefaultFont(Renderer::SMALL)->getSize());
 
 	//actually read the components
