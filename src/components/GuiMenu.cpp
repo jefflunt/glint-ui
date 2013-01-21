@@ -64,5 +64,5 @@ void GuiMenu::populateList()
 
 void GuiMenu::onRender()
 {
-	Renderer::drawRect(0, 0, Renderer::getScreenWidth(), Renderer::getScreenHeight(), 0x444444bb);
+	Renderer::drawRect(0, 0, Renderer::getScreenWidth(), Renderer::getScreenHeight(), 0x000000bb);
 }
