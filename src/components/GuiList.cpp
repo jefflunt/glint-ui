@@ -19,7 +19,7 @@ GuiList<listType>::GuiList(int offsetX, int offsetY, Font* font)
 	mFont = font;
 	mSelectorColor = 0x000000FF;
 	mSelectedTextColorOverride = 0xFFFFFFFF;
-	mDrawCentered = true;
+	mDrawCentered = false;
 
 	InputManager::registerComponent(this);
 }
@@ -55,7 +55,7 @@ void GuiList<listType>::onRender()
 
 	if(mRowVector.size() == 0)
 	{
-		Renderer::drawCenteredText("The list is empty.", 0, y, 0xFF0000FF, mFont);
+		Renderer::drawText("The list is empty.", 20, y, 0xFF0000FF, mFont);
 		return;
 	}
 

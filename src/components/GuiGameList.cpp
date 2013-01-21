@@ -221,7 +221,7 @@ void GuiGameList::updateTheme()
 
 	if(mDetailed)
 	{
-		mList->setCentered(mTheme->getListCentered());
+		mList->setCentered(false);
 
 		mList->setOffsetX(mTheme->getListOffsetX() * Renderer::getScreenWidth());
 		mList->setTextOffsetX(mTheme->getListTextOffsetX() * Renderer::getScreenWidth());
