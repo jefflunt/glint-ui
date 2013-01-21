@@ -47,9 +47,7 @@ void GuiInputConfig::onRender()
 
 	Renderer::drawText("Configure controller:", 20, 20, 0x000000FF, font);
 
-	if(mDone)
-		Renderer::drawText("All done! Press a keyboard key to save.", 0, height * 5, 0x00BB00FF, font);
-	else
+	if(!mDone)
 		Renderer::drawText("Press " + sInputs[mInputNum], 0, height * 5, 0x00C000FF, font);
 }
 
