@@ -60,7 +60,7 @@ void GuiMenu::populateList()
 	//commands added here are called with system() when selected (so are executed as shell commands)
 	//the method is GuiList::addObject(std::string displayString, std::string commandString, unsigned int displayHexColor);
 	//the list will automatically adjust as items are added to it, this should be the only area you need to change
-  mList->addObject("Setup controllers", "echo 'Resetting controllers'", 0xFFFFFFFF);
+  mList->addObject("Setup controllers", "rm ~/.glint-es/es_input.cfg", 0xFFFFFFFF);
   mList->addObject("Reboot glint", "sudo shutdown -r now", 0xFFFFFFFF);
   mList->addObject("Shutdown glint", "sudo shutdown -hP now", 0xFFFFFFFF);
 	mList->addObject("Exit", "pkill glint-es", 0xFFFFFFFF);
