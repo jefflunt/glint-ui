@@ -23,10 +23,8 @@ GuiInputConfig::GuiInputConfig()
 		mDone = true;
 		return;
 	} else {
-    for (int i = 0; i < SDL_NumJoysticks(); i++) {
-  		std::cout << "Opening joystick \"" << SDL_JoystickName(i) << "\" for configuration...\n";
-	  	mJoystick = SDL_JoystickOpen(i);
-    }
+    std::cout << "Opening joystick \"" << SDL_JoystickName(0) << "\" for configuration...\n";
+		mJoystick = SDL_JoystickOpen(0);
 	}
 }
 
