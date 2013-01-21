@@ -1,4 +1,5 @@
 #include "GuiMenu.h"
+#include "components/GuiInputConfig.h"
 #include <iostream>
 
 GuiMenu::GuiMenu(GuiComponent* parent)
