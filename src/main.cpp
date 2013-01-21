@@ -5,7 +5,7 @@
 #include "components/GuiGameList.h"
 #include "SystemData.h"
 #include <boost/filesystem.hpp>
-#include "components/GuiInputConfig.h"
+#include "GuiInputConfig.h"
 #include <SDL.h>
 #include "platform.h"
 
