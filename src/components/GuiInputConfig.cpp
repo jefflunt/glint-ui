@@ -53,8 +53,8 @@ void GuiInputConfig::onInput(InputManager::InputButton button, bool keyDown)
 {
 	if(mDone)
 	{
-		if(InputManager::lastEvent->type == SDL_KEYUP)
-		{
+#		if(InputManager::lastEvent->type == SDL_KEYUP)
+#		{
 			writeConfig();
 
 			if(mJoystick)
@@ -63,7 +63,7 @@ void GuiInputConfig::onInput(InputManager::InputButton button, bool keyDown)
 			InputManager::loadConfig();
 			delete this;
 			GuiGameList::create();
-		}
+#		}
 		return;
 	}
 
