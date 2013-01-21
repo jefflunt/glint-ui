@@ -104,7 +104,6 @@ void processConfigOrDie() {
 				new GuiInputConfig();
 			else
 				GuiGameList::create();
-
 		}
 	}
 }
