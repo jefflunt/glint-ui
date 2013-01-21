@@ -22,9 +22,11 @@ GuiInputConfig::GuiInputConfig()
 		mJoystick = NULL;
 		mDone = true;
 		return;
-	}else{
-		std::cout << "Opening joystick \"" << SDL_JoystickName(0) << "\" for configuration...\n";
-		mJoystick = SDL_JoystickOpen(0);
+	} else {
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+  		std::cout << "Opening joystick \"" << SDL_JoystickName(i) << "\" for configuration...\n";
+	  	mJoystick = SDL_JoystickOpen(i);
+    }
 	}
 }
 
