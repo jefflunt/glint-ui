@@ -43,10 +43,10 @@ void GuiInputConfig::onRender()
 	int height = font->getHeight() + 6;
 
 
-	Renderer::drawText("Configure controller:", 20, 20, 0x000000FF, font);
+	Renderer::drawText("Configure controller #1:", 20, 20, 0x000000FF, font);
 
 	if(!mDone)
-		Renderer::drawText("Press " + sInputs[mInputNum], 0, height * 5, 0x00C000FF, font);
+		Renderer::drawText("Press " + sInputs[mInputNum], 20, height * 5, 0x00C000FF, font);
 }
 
 void GuiInputConfig::onInput(InputManager::InputButton button, bool keyDown)

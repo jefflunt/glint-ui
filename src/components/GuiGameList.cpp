@@ -94,7 +94,7 @@ void GuiGameList::onRender()
 
 	//header
 	if(!mTheme->getHeaderHidden())
-		Renderer::drawCenteredText(mSystem->getName(), 0, 1, 0xFF0000FF, Renderer::getDefaultFont(Renderer::MEDIUM));
+		Renderer::drawText(mSystem->getName(), 20, 1, 0xFF0000FF, Renderer::getDefaultFont(Renderer::MEDIUM));
 
 	if(mDetailed)
 	{
