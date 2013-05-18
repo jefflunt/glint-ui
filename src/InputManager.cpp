@@ -188,85 +188,62 @@ void InputManager::processEvent(SDL_Event* event)
 	}
 }
 
-void InputManager::loadConfig()
-{
+void InputManager::loadConfig() {
 	//clear any old config
 	joystickButtonMap.clear();
 	joystickAxisPosMap.clear();
 	joystickAxisNegMap.clear();
 
 	std::string path = getConfigPath();
-
 	std::ifstream file(path.c_str());
-
 	std::string joystickName = "";
 
-	while(file.good())
-	{
+	while (file.good()) {
 		std::string line;
 		std::getline(file, line);
 
-		//skip blank lines and comments
-		if(line.empty() || line[0] == *"#")
+		// skip blank lines, comments, and config options that don't apply to the controller
+		if (line.empty() || line[0] == *"#" || line[0] != *"input_player")
 			continue;
 
-
-		//I know I could probably just read from the file stream directly, but I feel it would be harder to catch errors in a readable way
 		std::istringstream stream(line);
 
 		std::string token[3];
 		int tokNum = 0;
 
-		while(std::getline(stream, token[tokNum], ' '))
-		{
+		while (std::getline(stream, token[tokNum], ' ')) {
 			tokNum++;
-
-			//JOYNAME can have spaces
-			if(tokNum == 1 && token[0] == "JOYNAME")
-			{
-				std::getline(stream, token[1]);
-				break;
-			}
 
 			if(tokNum >= 3)
 				break;
 		}
 
 
-		if(token[0] == "BUTTON")
-		{
+		if (token[0] == "BUTTON") {
 			joystickButtonMap[atoi(token[1].c_str())] = (InputButton)atoi(token[2].c_str());
-		}else if(token[0] == "AXISPOS")
-		{
+		} else if(token[0] == "AXISPOS") {
 			joystickAxisPosMap[atoi(token[1].c_str())] = (InputButton)atoi(token[2].c_str());
-		}else if(token[0] == "AXISNEG")
-		{
+		} else if(token[0] == "AXISNEG") {
 			joystickAxisNegMap[atoi(token[1].c_str())] = (InputButton)atoi(token[2].c_str());
-		}else if(token[0] == "JOYNAME")
-		{
+		} else if(token[0] == "JOYNAME") {
 			joystickName = token[1];
-		}else{
+		} else {
 			std::cerr << "Invalid input type - " << token[0] << "\n";
 			return;
 		}
-
 	}
 
 	//if any joystick is plugged in
-	if(SDL_NumJoysticks() > 0)
-	{
-		if(!joystickName.empty())
-		{
-			for(int i = 0; i < SDL_NumJoysticks(); i++)
-			{
-				if(strcmp(SDL_JoystickName(i), joystickName.c_str()) == 0)
-				{
+	if (SDL_NumJoysticks() > 0) {
+		if (!joystickName.empty()) {
+			for(int i = 0; i < SDL_NumJoysticks(); i++) {
+				if(strcmp(SDL_JoystickName(i), joystickName.c_str()) == 0) {
 					std::cout << "opening joystick (" << joystickName << ")...";
 					SDL_JoystickOpen(i);
 					break;
 				}
 			}
-		}else{
+		} else {
 			SDL_JoystickOpen(0);  //if we don't have a specific joystick in mind, take the first
 		}
 	}
