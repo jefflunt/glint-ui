@@ -4,7 +4,7 @@
 #include "../Renderer.h"
 #include "../Font.h"
 #include "../GuiComponent.h"
-#include "../Input.h"
+#include "../Input/Input.h"
 #include <vector>
 #include <string>
 using namespace std;

@@ -1,19 +1,17 @@
 #include "Input.h"
-#include "GuiComponent.h"
+#include "../GuiComponent.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 using namespace std;
 
 namespace Input {
-  vector<GuiComponent*> inputVector;
-  SDL_Event* lastEvent = NULL;
-
   map<int, InputButton> joystickButtonMap, joystickAxisPosMap, joystickAxisNegMap;
   map<int, int> axisState;
   InputButton hatState = UNKNOWN;
 
-  int deadzone = 28000;
+  vector<GuiComponent*> inputVector;
+  SDL_Event* lastEvent = NULL;
 
   void registerComponent(GuiComponent* comp) {
     inputVector.push_back(comp);
@@ -137,7 +135,7 @@ namespace Input {
 
             // if this axis was previously not centered, it can only keyUp
             if (axisState[axis] != 0) {
-              if(abs(value) < deadzone) {
+              if(abs(value) < DEADZONE) {
                 if(axisState[axis] > 0)
                   button = joystickAxisPosMap[axis];
                 else
@@ -145,12 +143,12 @@ namespace Input {
                 axisState[axis] = 0;
               }
             } else {
-              if (value > deadzone) {
+              if (value > DEADZONE) {
                 //axisPos keyDown
                 axisState[axis] = 1;
                 keyDown = true;
                 button = joystickAxisPosMap[axis];
-              } else if(value < -deadzone) {
+              } else if(value < -DEADZONE) {
                 axisState[axis] = -1;
                 keyDown = true;
                 button = joystickAxisNegMap[axis];
@@ -166,56 +164,4 @@ namespace Input {
     }
   }
 
-  // Loads the input (controller) config file and assigns buttons
-  void loadConfig() {
-    //clear any old config
-    joystickButtonMap.clear();
-    joystickAxisPosMap.clear();
-    joystickAxisNegMap.clear();
-
-    string cfgLinesPrefix = "input_player";
-    string path = getConfigPath();
-    ifstream file(path.c_str());
-
-    cout << "Reading input config file...\n";
-    while (file.good()) {
-      string line;
-      getline(file, line);
-
-      // Only read lines that start with cfgLinesPrefix
-      if (cfgLinesPrefix != line.substr(0, cfgLinesPrefix.size())) {
-        cout << "\tUnknwn line: " << line << "\n";
-        continue;
-      } else {
-        cout << "\tConfig line: " << line << "\n";
-      }
-
-      istringstream stream(line);
-
-      string tokens[3];
-      int tokNum = 0;
-
-      // Break config line into the various tokens
-      while (getline(stream, tokens[tokNum], ' '))
-        tokNum++;
-
-      if (tokens[0] == "BUTTON") {
-        joystickButtonMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
-      } else if(tokens[0] == "AXISPOS") {
-        joystickAxisPosMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
-      } else if(tokens[0] == "AXISNEG") {
-        joystickAxisNegMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
-      }
-    }
-
-    // Open the first two joysticks (there may be only 1 or 0 joysticks - in this case we ignore that fact)
-    SDL_JoystickOpen(0);
-    SDL_JoystickOpen(1);
-  }
-
-  string getConfigPath() {
-    string home = getenv("HOME");
-    home += "/.retroarch/retroarch.cfg";
-    return home;
-  }
 } // namespace

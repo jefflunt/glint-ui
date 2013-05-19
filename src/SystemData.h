@@ -4,19 +4,20 @@
 #include <vector>
 #include <string>
 #include "FolderData.h"
+using namespace std;
 
 class GameData;
 
 class SystemData
 {
 public:
-	SystemData(std::string name, std::string startPath, std::string extension, std::string command);
+	SystemData(string name, string startPath, string extension, string command);
 	~SystemData();
 
 	FolderData* getRootFolder();
-	std::string getName();
-	std::string getStartPath();
-	std::string getExtension();
+	string getName();
+	string getStartPath();
+	string getExtension();
 	bool hasGamelist();
 
 	void launchGame(GameData* game);
@@ -24,14 +25,14 @@ public:
 	static void deleteSystems();
 	static void loadConfig();
 	static void writeExampleConfig();
-	static std::string getConfigPath();
+	static string getConfigPath();
 
-	static std::vector<SystemData*> sSystemVector;
+	static vector<SystemData*> sSystemVector;
 private:
-	std::string mName;
-	std::string mStartPath;
-	std::string mSearchExtension;
-	std::string mLaunchCommand;
+	string mName;
+	string mStartPath;
+	string mSearchExtension;
+	string mLaunchCommand;
 
   void populateFolder(FolderData* folder);
 

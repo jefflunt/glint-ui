@@ -1,7 +1,7 @@
 #include "GuiFastSelect.h"
 #include "../Renderer.h"
 #include <iostream>
-#include "../Input.h"
+#include "../Input/Input.h"
 using namespace Input;
 
 const std::string GuiFastSelect::LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

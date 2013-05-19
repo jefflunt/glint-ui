@@ -2,6 +2,7 @@
 #include "GuiGameList.h"
 #include <iostream>
 #include <fstream>
+#include "../Input/Init.h"
 using namespace Input;
 
 string GuiInputConfig::sConfigPath = "./input.cfg";
@@ -55,7 +56,7 @@ void GuiInputConfig::onInput(InputButton button, bool keyDown) {
     if(mJoystick)
       SDL_JoystickClose(mJoystick);
 
-    Input::loadConfig();
+    Input::initConfig();
     delete this;
     GuiGameList::create();
     //    }
@@ -78,16 +79,16 @@ void GuiInputConfig::onInput(InputButton button, bool keyDown) {
     //cout << "motion on axis " << event->jaxis.axis << " to value " << event->jaxis.value << "\n";
 
     if(event->jaxis.axis == mLastAxis) {
-      if(event->jaxis.value < deadzone && event->jaxis.value > - deadzone)
+      if(event->jaxis.value < DEADZONE && event->jaxis.value > - DEADZONE)
         mLastAxis = -1;
       return;
     }
-    if(event->jaxis.value > deadzone) {
+    if(event->jaxis.value > DEADZONE) {
       mAxisPosMap[event->jaxis.axis] = (InputButton)mInputNum;
       mInputNum++;
       mLastAxis = event->jaxis.axis;
       cout << "  Mapping " << sInputs[mInputNum - 1] << " to axis+ " << mLastAxis << "\n";
-    }else if(event->jaxis.value < -deadzone) {
+    }else if(event->jaxis.value < -DEADZONE) {
       mAxisNegMap[event->jaxis.axis] = (InputButton)mInputNum;
       mInputNum++;
       mLastAxis = event->jaxis.axis;

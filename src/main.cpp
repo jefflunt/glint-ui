@@ -8,9 +8,12 @@
 #include "components/GuiInputConfig.h"
 #include <SDL.h>
 #include "platform.h"
+#include "Input/Input.h"
+#include "Input/Init.h"
+using namespace std;
 
 #ifdef _RPI_
-  #include <bcm_host.h>
+#include <bcm_host.h>
 #endif
 
 #include <sstream>
@@ -41,41 +44,41 @@ int main(int argc, char* argv[]) {
   init(argc, argv);
   while (keepRunning) { runFrontEnd(); }
   shutdown();
-  
-	return 0;
+
+  return 0;
 }
 
 void init(int argc, char* argv[]) {
   bcm_host_init();
-  
-  std::cout << "Starting renderer...";
+
+  cout << "Starting renderer...";
   initRendererOrDie();
-  std::cout << "OK\n";
-  
-  std::cout << "Enabling joystick...";
+  cout << "OK\n";
+
+  cout << "Enabling joystick...";
   enableJoystick();
-  std::cout << "OK\n";
-  
-  std::cout << "Checking for existence of config directory and files...";
+  cout << "OK\n";
+
+  cout << "Checking for existence of config directory and files...";
   ensureConfigDirectoryExists();
-  std::cout << "OK\n";
-  
-  std::cout << "Processing config files...";
+  cout << "OK\n";
+
+  cout << "Processing config files...";
   processConfigOrDie();
-  std::cout << "OK\n";
-  
-  std::cout.flush();
+  cout << "OK\n";
+
+  cout.flush();
 }
 
 void shutdown() {
-	Renderer::deleteAll();
-	Renderer::deinit();
-	SystemData::deleteSystems();
+  Renderer::deleteAll();
+  Renderer::deinit();
+  SystemData::deleteSystems();
   bcm_host_deinit();
-  
-	std::cout << "glint-es cleanly shutting down...\n";
 
-	SDL_Quit();
+  cout << "glint-es cleanly shutting down...\n";
+
+  SDL_Quit();
 }
 
 void enableJoystick() {
@@ -85,89 +88,88 @@ void enableJoystick() {
 void processConfigOrDie() {
   if (configSettingsDoNotExist())	{
     createDemoConfig();
-	  keepRunning = false;
+    keepRunning = false;
 
-	} else if (configExistsButIsEmpty()) {
-		std::cerr << "A system config file in " << SystemData::getConfigPath() << " was found, but contained no systems.\n";
-		std::cerr << "Does at least one system have a game presesnt?\n";
-		keepRunning = false;
-	} else {
-	  //choose which GUI to open depending on Input configuration
-		if(fs::exists(Input::getConfigPath()))
-		{
-			//an input config already exists - load it and proceed to the gamelist as usual.
-			Input::loadConfig();
-			GuiGameList::create();
-		}else{
-			//if no input.cfg is present, but a joystick is connected, launch the input config GUI
-			if(SDL_NumJoysticks() > 0)
-				new GuiInputConfig();
-			else
-				GuiGameList::create();
-		}
-	}
+  } else if (configExistsButIsEmpty()) {
+    cerr << "A system config file in " << SystemData::getConfigPath() << " was found, but contained no systems.\n";
+    cerr << "Does at least one system have a game presesnt?\n";
+    keepRunning = false;
+  } else {
+    //choose which GUI to open depending on Input configuration
+    if (fs::exists(Input::getConfigPath())) {
+      //an input config already exists - load it and proceed to the gamelist as usual.
+      Input::initConfig();
+      GuiGameList::create();
+    } else {
+      // if no input.cfg is present, but a joystick is connected, launch the input config GUI
+      if (SDL_NumJoysticks() > 0)
+        new GuiInputConfig();
+      else
+        GuiGameList::create();
+    }
+  }
 }
 
 void runFrontEnd() {
   SDL_Event event;
   while (SDL_PollEvent(&event)) {
-  	switch(event.type) {
-  		case SDL_JOYHATMOTION:
-  		case SDL_JOYAXISMOTION:
-  		case SDL_JOYBUTTONDOWN:
-  		case SDL_JOYBUTTONUP:
-  		case SDL_KEYDOWN:
-  		case SDL_KEYUP:
-  			processEvent(&event);
-  			break;
+    switch(event.type) {
+      case SDL_JOYHATMOTION:
+      case SDL_JOYAXISMOTION:
+      case SDL_JOYBUTTONDOWN:
+      case SDL_JOYBUTTONUP:
+      case SDL_KEYDOWN:
+      case SDL_KEYUP:
+        processEvent(&event);
+        break;
 
-  		case SDL_QUIT:
-  			keepRunning = false;
-  			break;
-  	}
+      case SDL_QUIT:
+        keepRunning = false;
+        break;
+    }
   }
 
-	int curTime = SDL_GetTicks();
-	int deltaTime = curTime - lastTime;
-	lastTime = curTime;
+  int curTime = SDL_GetTicks();
+  int deltaTime = curTime - lastTime;
+  lastTime = curTime;
 
-	GuiComponent::processTicks(deltaTime);
-	Renderer::render();
+  GuiComponent::processTicks(deltaTime);
+  Renderer::render();
 
-	if (DRAWFRAMERATE) {
-		float framerate = 1/((float)deltaTime)*1000;
-		std::stringstream ss;
-		ss << framerate;
-		std::string fps;
-		ss >> fps;
-		Renderer::drawText(fps, 50, 50, 0x00FF00FF, Renderer::getDefaultFont(Renderer::MEDIUM));
-	}
+  if (DRAWFRAMERATE) {
+    float framerate = 1/((float)deltaTime)*1000;
+    stringstream ss;
+    ss << framerate;
+    string fps;
+    ss >> fps;
+    Renderer::drawText(fps, 50, 50, 0x00FF00FF, Renderer::getDefaultFont(Renderer::MEDIUM));
+  }
 
-	Renderer::swapBuffers();
+  Renderer::swapBuffers();
 }
 
 void initRendererOrDie() {
   bool renderInitSuccessful = Renderer::init();
-	if(!renderInitSuccessful) {
-		std::cerr << "Error initializing renderer!\n";
-		exit(1);
-	}
+  if(!renderInitSuccessful) {
+    cerr << "Error initializing renderer!\n";
+    exit(1);
+  }
 }
 
 void ensureConfigDirectoryExists() {
-  std::string home = getenv("HOME");
-	std::string configDir = home + "/.glint-es";
-	if(!fs::exists(configDir)) {
-		std::cout << "Creating config directory \"" << configDir << "\"\n";
-		fs::create_directory(configDir);
-	}
+  string home = getenv("HOME");
+  string configDir = home + "/.glint-es";
+  if(!fs::exists(configDir)) {
+    cout << "Creating config directory \"" << configDir << "\"\n";
+    fs::create_directory(configDir);
+  }
 }
 
 void createDemoConfig() {
   if (configSettingsDoNotExist()) {
-    std::cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
+    cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
     SystemData::writeExampleConfig();
-    std::cerr << "Set it up, then re-run glint-es.\n";
+    cerr << "Set it up, then re-run glint-es.\n";
   }
 }
 

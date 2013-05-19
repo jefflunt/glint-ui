@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Renderer.h"
-#include "Input.h"
+#include "Input/Input.h"
 using namespace Input;
 
 /*
