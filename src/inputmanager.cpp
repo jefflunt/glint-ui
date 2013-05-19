@@ -6,11 +6,11 @@ using namespace std;
 #include <sstream>
 
 namespace input {
-  std::vector<GuiComponent*> inputVector;
+  vector<GuiComponent*> inputVector;
   SDL_Event* lastEvent = NULL;
 
-  std::map<int, InputButton> joystickButtonMap, joystickAxisPosMap, joystickAxisNegMap;
-  std::map<int, int> axisState;
+  map<int, InputButton> joystickButtonMap, joystickAxisPosMap, joystickAxisNegMap;
+  map<int, int> axisState;
   InputButton hatState = UNKNOWN;
 
   int deadzone = 28000;
@@ -82,7 +82,7 @@ namespace input {
         SDL_Event* quit = new SDL_Event();
         quit->type = SDL_QUIT;
         SDL_PushEvent(quit);
-        std::cout << "Pushing quit event\n";
+        cout << "Pushing quit event\n";
       }
     } else {
       if (event->type == SDL_JOYBUTTONDOWN || event->type == SDL_JOYBUTTONUP) {
@@ -173,30 +173,30 @@ namespace input {
     joystickAxisPosMap.clear();
     joystickAxisNegMap.clear();
 
-    std::string cfgLinesPrefix = "input_player";
-    std::string path = getConfigPath();
-    std::ifstream file(path.c_str());
+    string cfgLinesPrefix = "input_player";
+    string path = getConfigPath();
+    ifstream file(path.c_str());
 
-    std::cout << "Reading input config file...\n";
+    cout << "Reading input config file...\n";
     while (file.good()) {
-      std::string line;
-      std::getline(file, line);
+      string line;
+      getline(file, line);
 
       // Only read lines that start with cfgLinesPrefix
       if (cfgLinesPrefix != line.substr(0, cfgLinesPrefix.size())) {
-        std::cout << "\tUnknwn line: " << line << "\n";
+        cout << "\tUnknwn line: " << line << "\n";
         continue;
       } else {
-        std::cout << "\tConfig line: " << line << "\n";
+        cout << "\tConfig line: " << line << "\n";
       }
 
-      std::istringstream stream(line);
+      istringstream stream(line);
 
-      std::string tokens[3];
+      string tokens[3];
       int tokNum = 0;
 
       // Break config line into the various tokens
-      while (std::getline(stream, tokens[tokNum], ' '))
+      while (getline(stream, tokens[tokNum], ' '))
         tokNum++;
 
       if (tokens[0] == "BUTTON") {
@@ -213,8 +213,8 @@ namespace input {
     SDL_JoystickOpen(1);
   }
 
-  std::string getConfigPath() {
-    std::string home = getenv("HOME");
+  string getConfigPath() {
+    string home = getenv("HOME");
     home += "/.retroarch/retroarch.cfg";
     return home;
   }
