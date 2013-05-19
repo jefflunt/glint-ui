@@ -12,166 +12,150 @@ int Font::getDpiY() { return 96; }
 
 int Font::getSize() { return mSize; }
 
-std::string Font::getDefaultPath()
-{
-	return "/usr/share/fonts/truetype/glint-font.ttf";
+std::string Font::getDefaultPath() {
+  return "/usr/share/fonts/truetype/glint-font.ttf";
 }
 
-void Font::initLibrary()
-{
-	if(FT_Init_FreeType(&sLibrary))
-	{
-		std::cerr << "Error initializing FreeType!\n";
-	}else{
-		libraryInitialized = true;
-	}
+void Font::initLibrary() {
+  if(FT_Init_FreeType(&sLibrary)) {
+    std::cerr << "Error initializing FreeType!\n";
+  } else {
+    libraryInitialized = true;
+  }
 }
 
-Font::Font(std::string path, int size)
-{
-	//register to receive init/deinit callbacks
-	Renderer::registerComponent(this);
+Font::Font(std::string path, int size) {
+  //register to receive init/deinit callbacks
+  Renderer::registerComponent(this);
 
-	mPath = path;
-	mSize = size;
+  mPath = path;
+  mSize = size;
 
-	onInit();
+  onInit();
 }
 
-void Font::onInit()
-{
-	if(!libraryInitialized)
-		initLibrary();
+void Font::onInit() {
+  if (!libraryInitialized)
+    initLibrary();
 
-	mMaxGlyphHeight = 0;
+  mMaxGlyphHeight = 0;
 
-	if(FT_New_Face(sLibrary, mPath.c_str(), 0, &face))
-	{
-		std::cerr << "Error creating font face! (path: " << mPath.c_str() << "\n";
-		return;
-	}
+  if (FT_New_Face(sLibrary, mPath.c_str(), 0, &face)) {
+    std::cerr << "Error creating font face! (path: " << mPath.c_str() << "\n";
+    return;
+  }
 
-	//FT_Set_Char_Size(face, 0, size * 64, getDpiX(), getDpiY());
-	FT_Set_Pixel_Sizes(face, 0, mSize);
+  //FT_Set_Char_Size(face, 0, size * 64, getDpiX(), getDpiY());
+  FT_Set_Pixel_Sizes(face, 0, mSize);
 
-	buildAtlas();
+  buildAtlas();
 
-	FT_Done_Face(face);
+  FT_Done_Face(face);
 }
 
-void Font::onDeinit()
-{
-	if(textureID)
-		glDeleteTextures(1, &textureID);
+void Font::onDeinit() {
+  if(textureID)
+    glDeleteTextures(1, &textureID);
 }
 
-void Font::buildAtlas()
-{
-	//find the size we should use
-	FT_GlyphSlot g = face->glyph;
-	int w = 0;
-	int h = 0;
+void Font::buildAtlas() {
+  //find the size we should use
+  FT_GlyphSlot g = face->glyph;
+  int w = 0;
+  int h = 0;
 
-	/*for(int i = 32; i < 128; i++)
-	{
-		if(FT_Load_Char(face, i, FT_LOAD_RENDER))
-		{
-			fprintf(stderr, "Loading character %c failed!\n", i);
-			continue;
-		}
+  /*for(int i = 32; i < 128; i++) {
+    if(FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+    fprintf(stderr, "Loading character %c failed!\n", i);
+    continue;
+    }
 
-		w += g->bitmap.width;
-		h = std::max(h, g->bitmap.rows);
-	}*/
+    w += g->bitmap.width;
+    h = std::max(h, g->bitmap.rows);
+    }*/
 
-	//the max size (GL_MAX_TEXTURE_SIZE) is like 3300
-	w = 2048;
-	h = 512;
+  //the max size (GL_MAX_TEXTURE_SIZE) is like 3300
+  w = 2048;
+  h = 512;
 
-	textureWidth = w;
-	textureHeight = h;
+  textureWidth = w;
+  textureHeight = h;
 
 
 
-	//create the texture
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+  //create the texture
+  glGenTextures(1, &textureID);
+  glBindTexture(GL_TEXTURE_2D, textureID);
 
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  glPixelStorei(GL_PACK_ALIGNMENT, 1);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, NULL);
 
-	//copy the glyphs into the texture
-	int x = 0;
-	int y = 0;
-	int maxHeight = 0;
-	for(int i = 32; i < 128; i++)
-	{
-		if(FT_Load_Char(face, i, FT_LOAD_RENDER))
-			continue;
+  //copy the glyphs into the texture
+  int x = 0;
+  int y = 0;
+  int maxHeight = 0;
+  for(int i = 32; i < 128; i++) {
+    if(FT_Load_Char(face, i, FT_LOAD_RENDER))
+      continue;
 
-		 //prints rendered texture to the console
-		/*std::cout << "uploading at x: " << x << ", w: " << g->bitmap.width << " h: " << g->bitmap.rows << "\n";
+    //prints rendered texture to the console
+    /*std::cout << "uploading at x: " << x << ", w: " << g->bitmap.width << " h: " << g->bitmap.rows << "\n";
 
-		for(int k = 0; k < g->bitmap.rows; k++)
-		{
-			for(int j = 0; j < g->bitmap.width; j++)
-			{
-				if(g->bitmap.buffer[g->bitmap.width * k + j])
-					std::cout << ".";
-				else
-					std::cout << " ";
-			}
-			std::cout << "\n";
-		}*/
+      for(int k = 0; k < g->bitmap.rows; k++) {
+      for(int j = 0; j < g->bitmap.width; j++) {
+      if(g->bitmap.buffer[g->bitmap.width * k + j])
+      std::cout << ".";
+      else
+      std::cout << " ";
+      }
+      std::cout << "\n";
+      }*/
 
-		if(x + g->bitmap.width >= textureWidth)
-		{
-			x = 0;
-			y += maxHeight;
-			maxHeight = 0;
-		}
+    if(x + g->bitmap.width >= textureWidth) {
+      x = 0;
+      y += maxHeight;
+      maxHeight = 0;
+    }
 
-		if(g->bitmap.rows > maxHeight)
-			maxHeight = g->bitmap.rows;
+    if(g->bitmap.rows > maxHeight)
+      maxHeight = g->bitmap.rows;
 
-		glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
 
-		charData[i].texX = x;
-		charData[i].texY = y;
-		charData[i].texW = g->bitmap.width;
-		charData[i].texH = g->bitmap.rows;
-		charData[i].advX = g->metrics.horiAdvance >> 6;
-		charData[i].advY = g->advance.y >> 6;
-		charData[i].bearingY = g->metrics.horiBearingY >> 6;
+    charData[i].texX = x;
+    charData[i].texY = y;
+    charData[i].texW = g->bitmap.width;
+    charData[i].texH = g->bitmap.rows;
+    charData[i].advX = g->metrics.horiAdvance >> 6;
+    charData[i].advY = g->advance.y >> 6;
+    charData[i].bearingY = g->metrics.horiBearingY >> 6;
 
-		if(charData[i].texH > mMaxGlyphHeight)
-			mMaxGlyphHeight = charData[i].texH;
+    if(charData[i].texH > mMaxGlyphHeight)
+      mMaxGlyphHeight = charData[i].texH;
 
-		x += g->bitmap.width;
-	}
+    x += g->bitmap.width;
+  }
 
-	if(y >= textureHeight)
-	{
-		std::cerr << "Error - font size exceeded texture size! If you were doing something reasonable, tell Aloshi to fix it!\n";
-	}
+  if(y >= textureHeight) {
+    std::cerr << "Error - font size exceeded texture size! If you were doing something reasonable, tell Aloshi to fix it!\n";
+  }
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+  glBindTexture(GL_TEXTURE_2D, 0);
 
-	//std::cout << "generated texture \"" << textureID << "\" (w: " << w << " h: " << h << ")" << std::endl;
+  //std::cout << "generated texture \"" << textureID << "\" (w: " << w << " h: " << h << ")" << std::endl;
 }
 
-Font::~Font()
-{
-	Renderer::unregisterComponent(this);
+Font::~Font() {
+  Renderer::unregisterComponent(this);
 
-	if(textureID)
-		glDeleteTextures(1, &textureID);
+  if(textureID)
+    glDeleteTextures(1, &textureID);
 }
 
 
@@ -183,138 +167,132 @@ Font::~Font()
 //...
 //that was the thinking at the time and honestly an array would have been smarter wow I'm dumb
 struct point {
-	GLfloat pos0x;
-	GLfloat pos0y;
+  GLfloat pos0x;
+  GLfloat pos0y;
 
-	GLfloat pos1x;
-	GLfloat pos1y;
+  GLfloat pos1x;
+  GLfloat pos1y;
 
-	GLfloat pos2x;
-	GLfloat pos2y;
+  GLfloat pos2x;
+  GLfloat pos2y;
 };
 
 struct tex {
-	GLfloat tex0x;
-	GLfloat tex0y;
+  GLfloat tex0x;
+  GLfloat tex0y;
 
-	GLfloat tex1x;
-	GLfloat tex1y;
+  GLfloat tex1x;
+  GLfloat tex1y;
 
-	GLfloat tex2x;
-	GLfloat tex2y;
+  GLfloat tex2x;
+  GLfloat tex2y;
 };
 
-void Font::drawText(std::string text, int startx, int starty, int color)
-{
-	if(!textureID)
-	{
-		std::cerr << "Error - tried to draw with Font that has no texture loaded!\n";
-		return;
-	}
+void Font::drawText(std::string text, int startx, int starty, int color) {
+  if(!textureID) {
+    std::cerr << "Error - tried to draw with Font that has no texture loaded!\n";
+    return;
+  }
 
 
-	starty += mMaxGlyphHeight;
+  starty += mMaxGlyphHeight;
 
-	//padding (another 0.5% is added to the bottom through the sizeText function)
-	starty += mMaxGlyphHeight * 0.1;
-
-
-	int pointCount = text.length() * 2;
-	point* points = new point[pointCount];
-	tex* texs = new tex[pointCount];
-	GLubyte* colors = new GLubyte[pointCount * 3 * 4];
+  //padding (another 0.5% is added to the bottom through the sizeText function)
+  starty += mMaxGlyphHeight * 0.1;
 
 
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  int pointCount = text.length() * 2;
+  point* points = new point[pointCount];
+  tex* texs = new tex[pointCount];
+  GLubyte* colors = new GLubyte[pointCount * 3 * 4];
 
 
-	//texture atlas width/height
-	float tw = (float)textureWidth;
-	float th = (float)textureHeight;
-
-	int p = 0;
-	int i = 0;
-
-	float x = startx;
-	float y = starty;
-	for(; p < pointCount; i++, p++)
-	{
-		unsigned char letter = text[i];
-
-		if(letter < 32 || letter >= 128)
-			letter = 127; //print [X] if character is not standard ASCII
-
-		points[p].pos0x = x;								points[p].pos0y = y + charData[letter].texH - charData[letter].bearingY;
-		points[p].pos1x = x + charData[letter].texW;					points[p].pos1y = y - charData[letter].bearingY;
-		points[p].pos2x = x;								points[p].pos2y = y - charData[letter].bearingY;
-
-		texs[p].tex0x = charData[letter].texX / tw;					texs[p].tex0y = (charData[letter].texY + charData[letter].texH) / th;
-		texs[p].tex1x = (charData[letter].texX + charData[letter].texW) / tw;		texs[p].tex1y = charData[letter].texY / th;
-		texs[p].tex2x = charData[letter].texX / tw;					texs[p].tex2y = charData[letter].texY / th;
+  glBindTexture(GL_TEXTURE_2D, textureID);
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-		p++;
+  //texture atlas width/height
+  float tw = (float)textureWidth;
+  float th = (float)textureHeight;
 
-		points[p].pos0x = x;						points[p].pos0y = y + charData[letter].texH  - charData[letter].bearingY;
-		points[p].pos1x = x + charData[letter].texW;			points[p].pos1y = y  - charData[letter].bearingY;
-		points[p].pos2x = x + charData[letter].texW;			points[p].pos2y = y + charData[letter].texH  - charData[letter].bearingY;
+  int p = 0;
+  int i = 0;
 
-		texs[p].tex0x = charData[letter].texX / tw;					texs[p].tex0y = (charData[letter].texY + charData[letter].texH) / th;
-		texs[p].tex1x = (charData[letter].texX + charData[letter].texW) / tw;		texs[p].tex1y = charData[letter].texY / th;
-		texs[p].tex2x = texs[p].tex1x;							texs[p].tex2y = texs[p].tex0y;
+  float x = startx;
+  float y = starty;
+  for(; p < pointCount; i++, p++) {
+    unsigned char letter = text[i];
+
+    if(letter < 32 || letter >= 128)
+      letter = 127; //print [X] if character is not standard ASCII
+
+    points[p].pos0x = x;								points[p].pos0y = y + charData[letter].texH - charData[letter].bearingY;
+    points[p].pos1x = x + charData[letter].texW;					points[p].pos1y = y - charData[letter].bearingY;
+    points[p].pos2x = x;								points[p].pos2y = y - charData[letter].bearingY;
+
+    texs[p].tex0x = charData[letter].texX / tw;					texs[p].tex0y = (charData[letter].texY + charData[letter].texH) / th;
+    texs[p].tex1x = (charData[letter].texX + charData[letter].texW) / tw;		texs[p].tex1y = charData[letter].texY / th;
+    texs[p].tex2x = charData[letter].texX / tw;					texs[p].tex2y = charData[letter].texY / th;
 
 
-		x += charData[letter].advX;
-	}
+    p++;
 
-	Renderer::buildGLColorArray(colors, color, pointCount * 3);
+    points[p].pos0x = x;						points[p].pos0y = y + charData[letter].texH  - charData[letter].bearingY;
+    points[p].pos1x = x + charData[letter].texW;			points[p].pos1y = y  - charData[letter].bearingY;
+    points[p].pos2x = x + charData[letter].texW;			points[p].pos2y = y + charData[letter].texH  - charData[letter].bearingY;
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
+    texs[p].tex0x = charData[letter].texX / tw;					texs[p].tex0y = (charData[letter].texY + charData[letter].texH) / th;
+    texs[p].tex1x = (charData[letter].texX + charData[letter].texW) / tw;		texs[p].tex1y = charData[letter].texY / th;
+    texs[p].tex2x = texs[p].tex1x;							texs[p].tex2y = texs[p].tex0y;
 
-	glVertexPointer(2, GL_FLOAT, 0, points);
-	glTexCoordPointer(2, GL_FLOAT, 0, texs);
-	glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
 
-	glDrawArrays(GL_TRIANGLES, 0, pointCount * 3);
+    x += charData[letter].advX;
+  }
 
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
+  Renderer::buildGLColorArray(colors, color, pointCount * 3);
 
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_BLEND);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
 
-	delete[] points;
-	delete[] texs;
-	delete[] colors;
+  glVertexPointer(2, GL_FLOAT, 0, points);
+  glTexCoordPointer(2, GL_FLOAT, 0, texs);
+  glColorPointer(4, GL_UNSIGNED_BYTE, 0, colors);
+
+  glDrawArrays(GL_TRIANGLES, 0, pointCount * 3);
+
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_COLOR_ARRAY);
+
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_BLEND);
+
+  delete[] points;
+  delete[] texs;
+  delete[] colors;
 }
 
-void Font::sizeText(std::string text, int* w, int* h)
-{
-	int cwidth = 0;
-	for(unsigned int i = 0; i < text.length(); i++)
-	{
-		unsigned char letter = text[i];
-		if(letter < 32 || letter >= 128)
-			letter = 127;
+void Font::sizeText(std::string text, int* w, int* h) {
+  int cwidth = 0;
+  for (unsigned int i = 0; i < text.length(); i++) {
+    unsigned char letter = text[i];
+    if (letter < 32 || letter >= 128)
+      letter = 127;
 
-		cwidth += charData[letter].advX;
-	}
+    cwidth += charData[letter].advX;
+  }
 
 
-	if(w != NULL)
-		*w = cwidth;
+  if (w != NULL)
+    *w = cwidth;
 
-	if(h != NULL)
-		*h = mMaxGlyphHeight + mMaxGlyphHeight * 0.5;
+  if (h != NULL)
+    *h = mMaxGlyphHeight + mMaxGlyphHeight * 0.5;
 }
 
-int Font::getHeight()
-{
-	return mMaxGlyphHeight * 1.5;
+int Font::getHeight() {
+  return mMaxGlyphHeight * 1.5;
 }

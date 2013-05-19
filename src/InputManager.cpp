@@ -1,9 +1,11 @@
+using namespace std;
 #include "InputManager.h"
 #include "GuiComponent.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+namespace
 std::vector<GuiComponent*> InputManager::inputVector;
 SDL_Event* InputManager::lastEvent = NULL;
 
