@@ -1,9 +1,10 @@
 #include "GuiGameList.h"
-#include "../inputmanager.h"
+#include "../Input.h"
 #include <iostream>
 #include "GuiMenu.h"
 #include "GuiFastSelect.h"
 #include <boost/filesystem.hpp>
+using namespace Input;
 
 //this is just a default value; the true value is in mTheme->getListOffsetX();
 const float GuiGameList::sInfoWidth = 0.5;
@@ -40,7 +41,7 @@ GuiGameList::GuiGameList(bool useDetail) {
   setSystemId(0);
 
   Renderer::registerComponent(this);
-  input::registerComponent(this);
+  registerComponent(this);
 }
 
 GuiGameList::~GuiGameList() {
@@ -53,7 +54,7 @@ GuiGameList::~GuiGameList() {
     delete mTheme;
   }
 
-  input::unregisterComponent(this);
+  unregisterComponent(this);
 }
 
 void GuiGameList::setSystemId(int id) {
@@ -105,8 +106,8 @@ void GuiGameList::onRender() {
   }
 }
 
-void GuiGameList::onInput(input::InputButton button, bool keyDown) {
-  if(button == input::BUTTON1 && mFolder->getFileCount() > 0) {
+void GuiGameList::onInput(InputButton button, bool keyDown) {
+  if(button == BTN_1 && mFolder->getFileCount() > 0) {
     if(!keyDown) {
       FileData* file = mList->getSelectedObject();
       if(file->isFolder()) //if you selected a folder, add this directory to the stack, and use the selected one
@@ -122,7 +123,7 @@ void GuiGameList::onInput(input::InputButton button, bool keyDown) {
   }
 
   //if there's something on the directory stack, return to it
-  if(button == input::BUTTON2 && keyDown && mFolderStack.size()) {
+  if(button == BTN_2 && keyDown && mFolderStack.size()) {
     mFolder = mFolderStack.top();
     mFolderStack.pop();
     updateList();
@@ -131,26 +132,26 @@ void GuiGameList::onInput(input::InputButton button, bool keyDown) {
 
   //only allow switching systems if more than one exists (otherwise it'll reset your position when you switch and it's annoying)
   if(SystemData::sSystemVector.size() > 1) {
-    if(button == input::RIGHT && keyDown) {
+    if(button == AXIS_RIGHT && keyDown) {
       setSystemId(mSystemId + 1);
     }
-    if(button == input::LEFT && keyDown) {
+    if(button == AXIS_LEFT && keyDown) {
       setSystemId(mSystemId - 1);
     }
   }
 
   //open the "start menu"
-  if(button == input::MENU && keyDown) {
+  if(button == BTN_MENU && keyDown) {
     new GuiMenu(this);
   }
 
   //open the fast select menu
-  if(button == input::SELECT && keyDown) {
+  if(button == BTN_SELECT && keyDown) {
     new GuiFastSelect(this, mList, mList->getSelectedObject()->getName()[0], mTheme->getBoxData(), mTheme->getFastSelectColor());
   }
 
   if(mDetailed) {
-    if(button == input::UP || button == input::DOWN) {
+    if(button == AXIS_UP || button == AXIS_DOWN) {
       if(!keyDown)
         updateDetailData();
       else
@@ -237,12 +238,12 @@ void GuiGameList::clearDetailData() {
 //these are called when the menu opens/closes
 void GuiGameList::onPause() {
   mList->stopScrolling();
-  input::unregisterComponent(this);
+  unregisterComponent(this);
 }
 
 void GuiGameList::onResume() {
   updateDetailData();
-  input::registerComponent(this);
+  registerComponent(this);
 }
 
 //called when the renderer shuts down/returns

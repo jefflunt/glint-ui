@@ -3,7 +3,8 @@
 
 #include <vector>
 #include "Renderer.h"
-#include "inputmanager.h"
+#include "Input.h"
+using namespace Input;
 
 /*
 The GuiComponent class is what everything that is rendered, updated by time (ticking), or takes input is subclassed from.
@@ -11,7 +12,7 @@ GuiComponents have a list of child GuiComponents. Rendering, ticking, pausing/re
 You can rely on the parent getting called first - this way, you can control what order components are rendered in.
 You can also manually call the render/pause/resume/init/deinit methods if you so desire (e.g. want a child to render *before* its parent).
 
-To make a GuiComponent render/take input, you must register with the Renderer or inputmanager respectively (Renderer::registerComponent(comp) or input::registerComponent(comp)).
+To make a GuiComponent render/take input, you must register with the Renderer or inputmanager respectively (Renderer::registerComponent(comp) or Input::registerComponent(comp)).
 All components are automatically ticked every frame, just add an onTick(int deltaTime) method.
 onInput calls arrive before onRender calls.
 */
@@ -35,7 +36,7 @@ public:
 	virtual void onInit() { };
 	virtual void onDeinit() { };
 
-	virtual void onInput(input::InputButton button, bool keyDown) { };
+	virtual void onInput(InputButton button, bool keyDown) { };
 
 	void addChild(GuiComponent* comp);
 	void removeChild(GuiComponent* comp);

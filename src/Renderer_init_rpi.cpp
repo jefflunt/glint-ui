@@ -6,7 +6,9 @@
 #include <EGL/eglext.h>
 #include "Font.h"
 #include <SDL/SDL.h>
-#include "inputmanager.h"
+#include "Input.h"
+using namespace std;
+using namespace Input;
 
 namespace Renderer
 {
@@ -33,33 +35,33 @@ namespace Renderer
 
 			if(success < 0)
 			{
-				std::cerr << "Error getting display size!\n";
+				cerr << "Error getting display size!\n";
 				return false;
 			}
 		}
-		std::cout << display_width << "x" << display_height << "...";
+		cout << display_width << "x" << display_height << "...";
 	  
 		if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) != 0)
 		{
-			std::cerr << "Error initializing SDL!\n";
-			std::cerr << SDL_GetError() << "\n";
-			std::cerr << "Are you in the 'video' and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
+			cerr << "Error initializing SDL!\n";
+			cerr << SDL_GetError() << "\n";
+			cerr << "Are you in the 'video' and 'input' groups? Is X closed? Is your firmware up to date? Are you using at least the 192/64 memory split?\n";
 			return false;
 		}
 
 		sdlScreen = SDL_SetVideoMode(1, 1, 0, SDL_SWSURFACE);
 		if(sdlScreen == NULL)
 		{
-			std::cerr << "Error creating SDL window for input!\n";
+			cerr << "Error creating SDL window for input!\n";
 			return false;
 		}
 
 		//have to reload config to re-open SDL joysticks
-		input::loadConfig();
+		Input::loadConfig();
 
 
 
-		std::cout << "Creating surface...";
+		cout << "Creating surface...";
 
 		DISPMANX_ELEMENT_HANDLE_T dispman_element;
 		DISPMANX_DISPLAY_HANDLE_T dispman_display;
@@ -72,21 +74,21 @@ namespace Renderer
 		display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 		if(display == EGL_NO_DISPLAY)
 		{
-			std::cerr << "Error getting display!\n";
+			cerr << "Error getting display!\n";
 			return false;
 		}
 
 		bool result = eglInitialize(display, NULL, NULL);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error initializing display!\n";
+			cerr << "Error initializing display!\n";
 			return false;
 		}
 
 		result = eglBindAPI(EGL_OPENGL_ES_API);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error binding API!\n";
+			cerr << "Error binding API!\n";
 			return false;
 		}
 
@@ -106,7 +108,7 @@ namespace Renderer
 
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error choosing config!\n";
+			cerr << "Error choosing config!\n";
 			return false;
 		}
 
@@ -114,9 +116,9 @@ namespace Renderer
 		context = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
 		if(context == EGL_NO_CONTEXT)
 		{
-			std::cout << "Error: " << eglGetError() << "\n";
+			cout << "Error: " << eglGetError() << "\n";
 
-			std::cerr << "Error getting context!\n";
+			cerr << "Error getting context!\n";
 			return false;
 		}
 
@@ -141,19 +143,18 @@ namespace Renderer
 		surface = eglCreateWindowSurface(display, config, &nativewindow, NULL);
 		if(surface == EGL_NO_SURFACE)
 		{
-			std::cerr << "Error creating window surface!\n";
+			cerr << "Error creating window surface!\n";
 			return false;
 		}
 
 		result = eglMakeCurrent(display, surface, surface, context);
 		if(result == EGL_FALSE)
 		{
-			std::cerr << "Error with eglMakeCurrent!\n";
+			cerr << "Error with eglMakeCurrent!\n";
 			return false;
 		}
 
-
-		std::cout << "success!\n";
+		cout << "success!\n";
 
 		return true;
 	}

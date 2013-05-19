@@ -4,9 +4,11 @@
 #include "../Renderer.h"
 #include "../Font.h"
 #include "../GuiComponent.h"
-#include "../inputmanager.h"
+#include "../Input.h"
 #include <vector>
 #include <string>
+using namespace std;
+using namespace Input;
 
 //A graphical list. Supports multiple colors for rows and scrolling.
 //TODO - add truncation to text rendering if name exceeds a maximum width (a trailing elipses, perhaps).
@@ -19,15 +21,15 @@ public:
 
 	void onRender();
 	void onTick(int deltaTime);
-	void onInput(input::InputButton button, bool keyDown);
+	void onInput(InputButton button, bool keyDown);
 
-	void addObject(std::string name, listType obj, unsigned int color = 0xFF0000);
+	void addObject(string name, listType obj, unsigned int color = 0xFF0000);
 	void clear();
 
 	void onPause();
 	void onResume();
 
-	std::string getSelectedName();
+	string getSelectedName();
 	listType getSelectedObject();
 	int getSelection();
 	void stopScrolling();
@@ -43,6 +45,7 @@ public:
 	void setSelection(int i);
 
 	void setFont(Font* f);
+
 private:
 	static const int SCROLLDELAY = 507;
 	static const int SCROLLTIME = 200;
@@ -60,12 +63,12 @@ private:
 
 	struct ListRow
 	{
-		std::string name;
+		string name;
 		listType object;
 		unsigned int color;
 	};
 
-	std::vector<ListRow> mRowVector;
+	vector<ListRow> mRowVector;
 	int mSelection;
 };
 

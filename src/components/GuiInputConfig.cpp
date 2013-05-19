@@ -2,9 +2,10 @@
 #include "GuiGameList.h"
 #include <iostream>
 #include <fstream>
+using namespace Input;
 
-std::string GuiInputConfig::sConfigPath = "./input.cfg";
-std::string GuiInputConfig::sInputs[] = { "UNKNOWN", "UP", "DOWN", "LEFT", "RIGHT", "BUTTON A (Action)", "BUTTON B (Back)", "START (Show menu)", "SELECT (Jump-to-letter)", "PAGE UP", "PAGE DOWN" }; //must be same order as input::InputButton enum; only add to the end to preserve backwards compatibility
+string GuiInputConfig::sConfigPath = "./input.cfg";
+string GuiInputConfig::sInputs[] = { "UNKNOWN", "UP", "DOWN", "LEFT", "RIGHT", "BUTTON A (Action)", "BUTTON B (Back)", "START (Show menu)", "SELECT (Jump-to-letter)", "PAGE UP", "PAGE DOWN" }; //must be same order as InputButton enum; only add to the end to preserve backwards compatibility
 int GuiInputConfig::sInputCount = 9;
 
 GuiInputConfig::GuiInputConfig() {
@@ -13,22 +14,22 @@ GuiInputConfig::GuiInputConfig() {
   mLastAxis = -1;
 
   Renderer::registerComponent(this);
-  input::registerComponent(this);
+  registerComponent(this);
 
   if(SDL_NumJoysticks() < 1) {
-    std::cerr << "Error - GuiInputConfig found no SDL joysticks!\n";
+    cerr << "Error - GuiInputConfig found no SDL joysticks!\n";
     mJoystick = NULL;
     mDone = true;
     return;
   } else {
-    std::cout << "Opening joystick \"" << SDL_JoystickName(0) << "\" for configuration...\n";
+    cout << "Opening joystick \"" << SDL_JoystickName(0) << "\" for configuration...\n";
     mJoystick = SDL_JoystickOpen(0);
   }
 }
 
 GuiInputConfig::~GuiInputConfig() {
   Renderer::unregisterComponent(this);
-  input::unregisterComponent(this);
+  unregisterComponent(this);
 }
 
 void GuiInputConfig::onRender() {
@@ -45,52 +46,52 @@ void GuiInputConfig::onRender() {
     Renderer::drawText("Press " + sInputs[mInputNum], 20, height * 5, 0x00C000FF, font);
 }
 
-void GuiInputConfig::onInput(input::InputButton button, bool keyDown) {
+void GuiInputConfig::onInput(InputButton button, bool keyDown) {
   if(mDone) {
-    //    if(input::lastEvent->type == SDL_KEYUP)
+    //    if(lastEvent->type == SDL_KEYUP)
     //    {
     writeConfig();
 
     if(mJoystick)
       SDL_JoystickClose(mJoystick);
 
-    input::loadConfig();
+    Input::loadConfig();
     delete this;
     GuiGameList::create();
     //    }
     return;
   }
 
-  SDL_Event* event = input::lastEvent;
+  SDL_Event* event = lastEvent;
   if(event->type == SDL_KEYUP) {
     //keyboard key pressed; skip and continue
     mInputNum++;
   }
 
   if(event->type == SDL_JOYBUTTONDOWN) {
-    mButtonMap[event->jbutton.button] = (input::InputButton)mInputNum;
-    std::cout << "  Mapping " << sInputs[mInputNum] << " to button " << (int)event->jbutton.button << "\n";
+    mButtonMap[event->jbutton.button] = (InputButton)mInputNum;
+    cout << "  Mapping " << sInputs[mInputNum] << " to button " << (int)event->jbutton.button << "\n";
     mInputNum++;
   }
 
   if(event->type == SDL_JOYAXISMOTION) {
-    //std::cout << "motion on axis " << event->jaxis.axis << " to value " << event->jaxis.value << "\n";
+    //cout << "motion on axis " << event->jaxis.axis << " to value " << event->jaxis.value << "\n";
 
     if(event->jaxis.axis == mLastAxis) {
-      if(event->jaxis.value < input::deadzone && event->jaxis.value > - input::deadzone)
+      if(event->jaxis.value < deadzone && event->jaxis.value > - deadzone)
         mLastAxis = -1;
       return;
     }
-    if(event->jaxis.value > input::deadzone) {
-      mAxisPosMap[event->jaxis.axis] = (input::InputButton)mInputNum;
+    if(event->jaxis.value > deadzone) {
+      mAxisPosMap[event->jaxis.axis] = (InputButton)mInputNum;
       mInputNum++;
       mLastAxis = event->jaxis.axis;
-      std::cout << "  Mapping " << sInputs[mInputNum - 1] << " to axis+ " << mLastAxis << "\n";
-    }else if(event->jaxis.value < -input::deadzone) {
-      mAxisNegMap[event->jaxis.axis] = (input::InputButton)mInputNum;
+      cout << "  Mapping " << sInputs[mInputNum - 1] << " to axis+ " << mLastAxis << "\n";
+    }else if(event->jaxis.value < -deadzone) {
+      mAxisNegMap[event->jaxis.axis] = (InputButton)mInputNum;
       mInputNum++;
       mLastAxis = event->jaxis.axis;
-      std::cout << "  Mapping " << sInputs[mInputNum - 1] << " to axis- " << mLastAxis << "\n";
+      cout << "  Mapping " << sInputs[mInputNum - 1] << " to axis- " << mLastAxis << "\n";
     }
   }
 
@@ -101,14 +102,14 @@ void GuiInputConfig::onInput(input::InputButton button, bool keyDown) {
 }
 
 void GuiInputConfig::writeConfig() {
-  std::string path = input::getConfigPath();
+  string path = Input::getConfigPath();
 
-  std::ofstream file(path.c_str());
+  ofstream file(path.c_str());
 
   if(SDL_JoystickName(0))
     file << "JOYNAME " << SDL_JoystickName(0) << "\n";
 
-  typedef std::map<int, input::InputButton>::iterator it_type;
+  typedef map<int, InputButton>::iterator it_type;
   for(it_type iter = mButtonMap.begin(); iter != mButtonMap.end(); iter++) {
     file << "BUTTON " << iter->first << " " << iter->second << "\n";
   }

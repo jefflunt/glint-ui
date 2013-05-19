@@ -10,14 +10,14 @@ class GuiComponent;
 
 //The input takes native system input and abstracts it into InputButtons.
 //GuiComponents can be registered to receive onInput() events.
-namespace input {
+namespace Input {
   void registerComponent(GuiComponent* comp);
   void unregisterComponent(GuiComponent* comp);
 
   void loadConfig();
 
   //enum for identifying input, regardless of configuration
-  enum InputButton { UNKNOWN, UP, DOWN, LEFT, RIGHT, BUTTON1, BUTTON2, MENU, SELECT, PAGEUP, PAGEDOWN };
+  enum InputButton { UNKNOWN, AXIS_UP, AXIS_DOWN, AXIS_LEFT, AXIS_RIGHT, BTN_1, BTN_2, BTN_MENU, BTN_SELECT, BTN_PAGEUP, BTN_PAGEDOWN };
 
   void processEvent(SDL_Event* event);
 

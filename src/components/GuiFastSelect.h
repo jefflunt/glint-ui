@@ -6,6 +6,7 @@
 #include "../FolderData.h"
 #include "GuiList.h"
 #include "GuiBox.h"
+using namespace std;
 
 class GuiFastSelect : GuiComponent
 {
@@ -14,10 +15,10 @@ public:
 	~GuiFastSelect();
 
 	void onRender();
-	void onInput(input::InputButton button, bool keyDown);
+	void onInput(InputButton button, bool keyDown);
 	void onTick(int deltaTime);
 private:
-	static const std::string LETTERS;
+	static const string LETTERS;
 	static const int SCROLLSPEED;
 	static const int SCROLLDELAY;
 

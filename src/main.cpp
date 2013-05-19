@@ -93,10 +93,10 @@ void processConfigOrDie() {
 		keepRunning = false;
 	} else {
 	  //choose which GUI to open depending on Input configuration
-		if(fs::exists(input::getConfigPath()))
+		if(fs::exists(Input::getConfigPath()))
 		{
 			//an input config already exists - load it and proceed to the gamelist as usual.
-			input::loadConfig();
+			Input::loadConfig();
 			GuiGameList::create();
 		}else{
 			//if no input.cfg is present, but a joystick is connected, launch the input config GUI
@@ -118,7 +118,7 @@ void runFrontEnd() {
   		case SDL_JOYBUTTONUP:
   		case SDL_KEYDOWN:
   		case SDL_KEYUP:
-  			input::processEvent(&event);
+  			processEvent(&event);
   			break;
 
   		case SDL_QUIT:

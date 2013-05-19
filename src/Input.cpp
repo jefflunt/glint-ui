@@ -1,11 +1,11 @@
-using namespace std;
-#include "inputmanager.h"
+#include "Input.h"
 #include "GuiComponent.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
+using namespace std;
 
-namespace input {
+namespace Input {
   vector<GuiComponent*> inputVector;
   SDL_Event* lastEvent = NULL;
 
@@ -41,34 +41,34 @@ namespace input {
 
       switch (event->key.keysym.sym) {
         case SDLK_LEFT:
-          button = LEFT;
+          button = AXIS_LEFT;
           break;
         case SDLK_RIGHT:
-          button = RIGHT;
+          button = AXIS_RIGHT;
           break;
         case SDLK_UP:
-          button = UP;
+          button = AXIS_UP;
           break;
         case SDLK_DOWN:
-          button = DOWN;
+          button = AXIS_DOWN;
           break;
         case SDLK_PAGEUP:
-          button = PAGEUP;
+          button = BTN_PAGEUP;
           break;
         case SDLK_PAGEDOWN:
-          button = PAGEDOWN;
+          button = BTN_PAGEDOWN;
           break;
         case SDLK_RETURN:
-          button = BUTTON1;
+          button = BTN_1;
           break;
         case SDLK_ESCAPE:
-          button = BUTTON2;
+          button = BTN_2;
           break;
         case SDLK_F1:
-          button = MENU;
+          button = BTN_MENU;
           break;
         case SDLK_F2:
-          button = SELECT;
+          button = BTN_SELECT;
           break;
 
         default:
@@ -104,14 +104,14 @@ namespace input {
           }
 
           if (hat & SDL_HAT_LEFT)
-            button = LEFT;
+            button = AXIS_LEFT;
           if (hat & SDL_HAT_RIGHT)
-            button = RIGHT;
+            button = AXIS_RIGHT;
 
           if (hat & SDL_HAT_UP)
-            button = UP;
+            button = AXIS_UP;
           if (hat & SDL_HAT_DOWN)
-            button = DOWN;
+            button = AXIS_DOWN;
 
           if (button == hatState && keyDown) {
             //ignore this hat event since the user most likely just made it a diagonal (but it still is using the old direction)

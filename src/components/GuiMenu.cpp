@@ -1,6 +1,7 @@
 #include "GuiMenu.h"
 #include "GuiInputConfig.h"
 #include <iostream>
+using namespace Input;
 
 GuiMenu::GuiMenu(GuiComponent* parent)
 {
@@ -15,21 +16,21 @@ GuiMenu::GuiMenu(GuiComponent* parent)
 	mSkippedMenuClose = false;
 
 	Renderer::registerComponent(this);
-	input::registerComponent(this);
+	registerComponent(this);
 }
 
 GuiMenu::~GuiMenu()
 {
 	Renderer::unregisterComponent(this);
-	input::unregisterComponent(this);
+	unregisterComponent(this);
 
 	delete mList;
 	mParent->resume();
 }
 
-void GuiMenu::onInput(input::InputButton button, bool keyDown)
+void GuiMenu::onInput(InputButton button, bool keyDown)
 {
-	if(button == input::MENU && !keyDown)
+	if(button == BTN_MENU && !keyDown)
 	{
 		if(!mSkippedMenuClose)
 		{
@@ -40,7 +41,7 @@ void GuiMenu::onInput(input::InputButton button, bool keyDown)
 		}
 	}
 
-	if(button == input::BUTTON1 && keyDown)
+	if(button == BTN_1 && keyDown)
 	{
 		if(system(mList->getSelectedObject().c_str()) != 0)
 		{

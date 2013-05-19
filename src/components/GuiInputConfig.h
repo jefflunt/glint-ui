@@ -2,7 +2,7 @@
 #define _GUIINPUTCONFIG_H_
 
 #include "../GuiComponent.h"
-#include "../inputmanager.h"
+#include "../Input.h"
 #include <map>
 #include <SDL/SDL.h>
 
@@ -12,7 +12,7 @@ public:
   ~GuiInputConfig();
 
   void onRender();
-  void onInput(input::InputButton button, bool keyDown);
+  void onInput(InputButton button, bool keyDown);
 private:
   bool mDone;
   int mInputNum;
@@ -22,9 +22,9 @@ private:
   static int sInputCount;
   static std::string sConfigPath;
 
-  std::map<int, input::InputButton> mButtonMap;
-  std::map<int, input::InputButton> mAxisPosMap;
-  std::map<int, input::InputButton> mAxisNegMap;
+  std::map<int, InputButton> mButtonMap;
+  std::map<int, InputButton> mAxisPosMap;
+  std::map<int, InputButton> mAxisNegMap;
   void writeConfig();
 };
 

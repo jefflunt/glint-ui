@@ -2,6 +2,7 @@
 
 #include "GuiList.h"
 #include <iostream>
+using namespace Input;
 
 template <typename listType>
 GuiList<listType>::GuiList(int offsetX, int offsetY, Font* font) {
@@ -20,12 +21,12 @@ GuiList<listType>::GuiList(int offsetX, int offsetY, Font* font) {
   mSelectedTextColorOverride = 0xFFFFFFFF;
   mDrawCentered = false;
 
-  input::registerComponent(this);
+  registerComponent(this);
 }
 
 template <typename listType>
 GuiList<listType>::~GuiList() {
-  input::unregisterComponent(this);
+  unregisterComponent(this);
 }
 
 template <typename listType>
@@ -76,29 +77,29 @@ void GuiList<listType>::onRender() {
 }
 
 template <typename listType>
-void GuiList<listType>::onInput(input::InputButton button, bool keyDown) {
-  if(mRowVector.size() > 0) {
-    if(keyDown) {
-      if(button == input::DOWN) {
+void GuiList<listType>::onInput(InputButton button, bool keyDown) {
+  if (mRowVector.size() > 0) {
+    if (keyDown) {
+      if (button == AXIS_DOWN) {
         mScrollDir = 1;
         scroll();
       }
 
-      if(button == input::UP) {
+      if (button == AXIS_UP) {
         mScrollDir = -1;
         scroll();
       }
-      if(button == input::PAGEDOWN) {
+      if (button == BTN_PAGEDOWN) {
         mScrollDir = 10;
         scroll();
       }
 
-      if(button == input::PAGEUP) {
+      if (button == BTN_PAGEUP) {
         mScrollDir = -10;
         scroll();
       }
-    }else{
-      if((button == input::DOWN && mScrollDir > 0) || (button == input::PAGEDOWN && mScrollDir > 0) || (button == input::UP && mScrollDir < 0) || (button == input::PAGEUP && mScrollDir < 0)) {
+    } else {
+      if((button == AXIS_DOWN && mScrollDir > 0) || (button == BTN_PAGEDOWN && mScrollDir > 0) || (button == AXIS_UP && mScrollDir < 0) || (button == BTN_PAGEUP && mScrollDir < 0)) {
         stopScrolling();
       }
     }
@@ -196,12 +197,12 @@ bool GuiList<listType>::isScrolling() {
 
 template <typename listType>
 void GuiList<listType>::onPause() {
-  input::unregisterComponent(this);
+  unregisterComponent(this);
 }
 
 template <typename listType>
 void GuiList<listType>::onResume() {
-  input::registerComponent(this);
+  registerComponent(this);
 }
 
 template <typename listType>
