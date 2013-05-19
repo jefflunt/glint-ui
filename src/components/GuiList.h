@@ -4,7 +4,7 @@
 #include "../Renderer.h"
 #include "../Font.h"
 #include "../GuiComponent.h"
-#include "../InputManager.h"
+#include "../inputmanager.h"
 #include <vector>
 #include <string>
 

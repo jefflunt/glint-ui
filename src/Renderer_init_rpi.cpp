@@ -6,7 +6,7 @@
 #include <EGL/eglext.h>
 #include "Font.h"
 #include <SDL/SDL.h>
-#include "InputManager.h"
+#include "inputmanager.h"
 
 namespace Renderer
 {

@@ -2,7 +2,7 @@
 #define _GUIINPUTCONFIG_H_
 
 #include "../GuiComponent.h"
-#include "../InputManager.h"
+#include "../inputmanager.h"
 #include <map>
 #include <SDL/SDL.h>
 

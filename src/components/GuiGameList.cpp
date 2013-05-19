@@ -1,5 +1,5 @@
 #include "GuiGameList.h"
-#include "../InputManager.h"
+#include "../inputmanager.h"
 #include <iostream>
 #include "GuiMenu.h"
 #include "GuiFastSelect.h"

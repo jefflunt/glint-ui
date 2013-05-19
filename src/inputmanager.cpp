@@ -1,5 +1,5 @@
 using namespace std;
-#include "InputManager.h"
+#include "inputmanager.h"
 #include "GuiComponent.h"
 #include <iostream>
 #include <fstream>
