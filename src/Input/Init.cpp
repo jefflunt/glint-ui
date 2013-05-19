@@ -1,13 +1,16 @@
 #include "Init.h"
+#include "Input.h"
+#include "../Util/StringParsing.h"
 #include <map>
 #include <string>
 #include <SDL/SDL.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "Input.h"
+
 using namespace std;
 using namespace Input;
+using namespace StringParsing;
 
 namespace Input {
   string getConfigPath() {
@@ -22,32 +25,33 @@ namespace Input {
     joystickAxisPosMap.clear();
     joystickAxisNegMap.clear();
 
-    string cfgLinesPrefix = "input_player";
+    string inputConfigLinePrefix = "input_player";
     string path = getConfigPath();
     ifstream file(path.c_str());
 
     cout << "Reading input config file...\n";
-    while (file.good()) {
+    while(file.good()) {
       string line;
       getline(file, line);
+      string inputConfigLinePrefix = "input_player";
 
-      // Only read lines that start with cfgLinesPrefix
-      if (cfgLinesPrefix != line.substr(0, cfgLinesPrefix.size())) {
+      if (startsWith(line, inputConfigLinePrefix)) {
+        vector<string> configLineElems;
+        configLineElems = split(line, ' ', configLineElems);
+        string configOption = configLineElems[0];
+        string configValue = configLineElems[2];
+        
+        cout << "\tConfig line: " << line << "\n";
+        cout << "\t\tOpt: " << configOption << "\n";
+        cout << "\t\tVal: " << configValue  << "\n";
+      } else {
         cout << "\tUnknwn line: " << line << "\n";
         continue;
-      } else {
-        cout << "\tConfig line: " << line << "\n";
       }
+    }
 
-      istringstream stream(line);
-
-      string tokens[3];
-      int tokNum = 0;
-
-      // Break config line into the various tokens
-      while (getline(stream, tokens[tokNum], ' '))
-        tokNum++;
-
+/*
+    while (file.good()) {
       if (tokens[0] == "BUTTON") {
         joystickButtonMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
       } else if(tokens[0] == "AXISPOS") {
@@ -56,6 +60,7 @@ namespace Input {
         joystickAxisNegMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
       }
     }
+*/
   }
 
   void initJoysticks() {
@@ -63,3 +68,4 @@ namespace Input {
     SDL_JoystickOpen(1);
   }
 }
+
