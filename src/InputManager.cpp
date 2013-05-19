@@ -13,39 +13,31 @@ InputManager::InputButton InputManager::hatState = InputManager::UNKNOWN;
 
 int InputManager::deadzone = 28000;
 
-void InputManager::registerComponent(GuiComponent* comp)
-{
+void InputManager::registerComponent(GuiComponent* comp) {
 	inputVector.push_back(comp);
 }
 
-void InputManager::unregisterComponent(GuiComponent* comp)
-{
-	for(unsigned int i = 0; i < inputVector.size(); i++)
-	{
-		if(inputVector.at(i) == comp)
-		{
+void InputManager::unregisterComponent(GuiComponent* comp) {
+	for(unsigned int i = 0; i < inputVector.size(); i++) {
+		if(inputVector.at(i) == comp) {
 			inputVector.erase(inputVector.begin() + i);
 			break;
 		}
 	}
 }
 
-void InputManager::processEvent(SDL_Event* event)
-{
+void InputManager::processEvent(SDL_Event* event) {
 	bool keyDown = false;
 	InputButton button = UNKNOWN;
 
 	lastEvent = event;
 
 	//keyboard events
-	if(event->type == SDL_KEYDOWN || event->type == SDL_KEYUP)
-	{
+	if (event->type == SDL_KEYDOWN || event->type == SDL_KEYUP) {
 		if(event->key.state == SDL_PRESSED)
 			keyDown = true;
 
-		//get InputButton from the event
-		switch(event->key.keysym.sym)
-		{
+		switch (event->key.keysym.sym) {
 			case SDLK_LEFT:
 				button = LEFT;
 				break;
@@ -83,95 +75,80 @@ void InputManager::processEvent(SDL_Event* event)
 		}
 
 		//catch emergency quit event
-		if(event->key.keysym.sym == SDLK_F4 && keyDown)
-		{
+		if (event->key.keysym.sym == SDLK_F4 && keyDown) {
 			//I have no idea if SDL will delete this event, but we're quitting, so I don't think it really matters
 			SDL_Event* quit = new SDL_Event();
 			quit->type = SDL_QUIT;
 			SDL_PushEvent(quit);
 			std::cout << "Pushing quit event\n";
 		}
-	}else{
-		if(event->type == SDL_JOYBUTTONDOWN || event->type == SDL_JOYBUTTONUP) //joystick button events
-		{
-			if(event->type == SDL_JOYBUTTONDOWN) //defaults to false, so no else
+	} else {
+		if (event->type == SDL_JOYBUTTONDOWN || event->type == SDL_JOYBUTTONUP) {
+			if(event->type == SDL_JOYBUTTONDOWN)
 				keyDown = true;
 
 			button = joystickButtonMap[event->jbutton.button];
-		}else{
-			if(event->type == SDL_JOYHATMOTION)
-			{
+		} else {
+			if (event->type == SDL_JOYHATMOTION) {
 				int hat = event->jhat.value;
 
-				if(hat == 0) //centered
-				{
+				// if centered
+				if (hat == 0) {
 					//we need to send a keyUp event for the last hat
 					//keyDown is already false
 					button = hatState;
-				}else{
+				} else {
 					keyDown = true;
 				}
 
-				if(hat & SDL_HAT_LEFT)
+				if (hat & SDL_HAT_LEFT)
 					button = LEFT;
-				if(hat & SDL_HAT_RIGHT)
+				if (hat & SDL_HAT_RIGHT)
 					button = RIGHT;
 
-				if(hat & SDL_HAT_UP)
+				if (hat & SDL_HAT_UP)
 					button = UP;
-				if(hat & SDL_HAT_DOWN)
+				if (hat & SDL_HAT_DOWN)
 					button = DOWN;
 
-				if(button == hatState && keyDown)
-				{
+				if (button == hatState && keyDown) {
 					//ignore this hat event since the user most likely just made it a diagonal (but it still is using the old direction)
 					button = UNKNOWN;
-				}else{
-					if(hatState != UNKNOWN && keyDown)
-					{
+				} else {
+					if (hatState != UNKNOWN && keyDown) {
 						//this will occur if the user went down -> downLeft -> Left or similar
 						button = hatState;
 						keyDown = false;
 						hatState = UNKNOWN;
 						processEvent(event);
-					}else{
+					} else {
 						if(!keyDown)
 							hatState = UNKNOWN;
 						else
 							hatState = button;
 					}
 				}
-
-				//for debugging hats
-				//if(button != UNKNOWN)
-				//	std::cout << "hat event, button: " << button << ", keyDown: " << keyDown << "\n";
-
-			}else{
-				if(event->type == SDL_JOYAXISMOTION)
-				{
+			} else {
+				if (event->type == SDL_JOYAXISMOTION) {
 					int axis = event->jaxis.axis;
 					int value = event->jaxis.value;
 
-					//if this axis was previously not centered, it can only keyUp
-					if(axisState[axis] != 0)
-					{
-						if(abs(value) < deadzone) //if it has indeed centered
-						{
+					// if this axis was previously not centered, it can only keyUp
+					if (axisState[axis] != 0) {
+						if(abs(value) < deadzone) {
 							if(axisState[axis] > 0)
 								button = joystickAxisPosMap[axis];
 							else
 								button = joystickAxisNegMap[axis];
 							axisState[axis] = 0;
 						}
-					}else{
-						if(value > deadzone)
-						{
+					} else {
+						if (value > deadzone) {
 							//axisPos keyDown
 							axisState[axis] = 1;
 							keyDown = true;
 							button = joystickAxisPosMap[axis];
-						}else if(value < -deadzone)
-						{
+						} else if(value < -deadzone) {
 							axisState[axis] = -1;
 							keyDown = true;
 							button = joystickAxisNegMap[axis];
@@ -182,76 +159,60 @@ void InputManager::processEvent(SDL_Event* event)
 		}
 	}
 
-	for(unsigned int i = 0; i < inputVector.size(); i++)
-	{
+	for (unsigned int i = 0; i < inputVector.size(); i++) {
 		inputVector.at(i)->onInput(button, keyDown);
 	}
 }
 
+// Loads the input (controller) config file and assigns buttons
 void InputManager::loadConfig() {
 	//clear any old config
 	joystickButtonMap.clear();
 	joystickAxisPosMap.clear();
 	joystickAxisNegMap.clear();
 
+	std::string cfgLinesPrefix = "input_player";
 	std::string path = getConfigPath();
 	std::ifstream file(path.c_str());
-	std::string joystickName = "";
 
+	std::cout << "Reading input config file...\n";
 	while (file.good()) {
 		std::string line;
 		std::getline(file, line);
 
-		// skip blank lines, comments, and config options that don't apply to the controller
-		if (line.empty() || line[0] == *"#" || line[0] != *"input_player")
+		// Only read lines that start with cfgLinesPrefix
+		if (cfgLinesPrefix != line.substr(0, cfgLinesPrefix.size())) {
+			std::cout << "\tUnknwn line: " << line << "\n";
 			continue;
+		} else {
+			std::cout << "\tConfig line: " << line << "\n";
+		}
 
 		std::istringstream stream(line);
 
-		std::string token[3];
+		std::string tokens[3];
 		int tokNum = 0;
 
-		while (std::getline(stream, token[tokNum], ' ')) {
+		// Break config line into the various tokens
+		while (std::getline(stream, tokens[tokNum], ' '))
 			tokNum++;
 
-			if(tokNum >= 3)
-				break;
-		}
-
-
-		if (token[0] == "BUTTON") {
-			joystickButtonMap[atoi(token[1].c_str())] = (InputButton)atoi(token[2].c_str());
-		} else if(token[0] == "AXISPOS") {
-			joystickAxisPosMap[atoi(token[1].c_str())] = (InputButton)atoi(token[2].c_str());
-		} else if(token[0] == "AXISNEG") {
-			joystickAxisNegMap[atoi(token[1].c_str())] = (InputButton)atoi(token[2].c_str());
-		} else if(token[0] == "JOYNAME") {
-			joystickName = token[1];
-		} else {
-			std::cerr << "Invalid input type - " << token[0] << "\n";
-			return;
+		if (tokens[0] == "BUTTON") {
+			joystickButtonMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
+		} else if(tokens[0] == "AXISPOS") {
+			joystickAxisPosMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
+		} else if(tokens[0] == "AXISNEG") {
+			joystickAxisNegMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
 		}
 	}
 
-	//if any joystick is plugged in
-	if (SDL_NumJoysticks() > 0) {
-		if (!joystickName.empty()) {
-			for(int i = 0; i < SDL_NumJoysticks(); i++) {
-				if(strcmp(SDL_JoystickName(i), joystickName.c_str()) == 0) {
-					std::cout << "opening joystick (" << joystickName << ")...";
-					SDL_JoystickOpen(i);
-					break;
-				}
-			}
-		} else {
-			SDL_JoystickOpen(0);  //if we don't have a specific joystick in mind, take the first
-		}
-	}
+	// Open the first two joysticks (there may be only 1 or 0 joysticks - in this case we ignore that fact)
+	SDL_JoystickOpen(0);
+	SDL_JoystickOpen(1);
 }
 
-std::string InputManager::getConfigPath()
-{
+std::string InputManager::getConfigPath() {
 	std::string home = getenv("HOME");
-	home += "/.glint-es/es_input.cfg";
+	home += "/.retroarch/retroarch.cfg";
 	return home;
 }

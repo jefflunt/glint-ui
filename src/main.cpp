@@ -1,4 +1,4 @@
-//EmulationStation, a graphical front-end for ROM browsing. Created by Alec "Aloshi" Lofquist.
+// glint-es, a graphical front-end for ROM browsing. Created by Alec "Aloshi" Lofquist and modified by Jeff Lunt
 
 #include <iostream>
 #include "Renderer.h"
@@ -73,7 +73,7 @@ void shutdown() {
 	SystemData::deleteSystems();
   bcm_host_deinit();
   
-	std::cout << "EmulationStation cleanly shutting down...\n";
+	std::cout << "glint-es cleanly shutting down...\n";
 
 	SDL_Quit();
 }
