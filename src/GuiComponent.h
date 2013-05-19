@@ -16,8 +16,7 @@ All components are automatically ticked every frame, just add an onTick(int delt
 onInput calls arrive before onRender calls.
 */
 
-class GuiComponent
-{
+class GuiComponent {
 public:
 	GuiComponent();
 	virtual ~GuiComponent();
