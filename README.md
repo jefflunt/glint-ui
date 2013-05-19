@@ -12,7 +12,7 @@ Lately I've been making more and more ambitious changes to the code. **glint-ui*
 
 I'm in the middle of refactoring the entire code base, one piece at a time as I encounter them. Because of this you're going to see a few things you should be aware of:
 
-* There are many code styles being simultaneously used throughout the code. This is a side effect of changing from one style to another, and I'm not really sure when the code base will be consistent. When wondering what the proper code style for the project is your best bet is to look at the most most recently changed code is and go with that style for future changes, while refactoring code that you run into that doesn't meet that style as you go along. I will eventually setting on a single style and work toward bring everything under that one style.
+* There are many code styles being simultaneously used throughout the code. This is a side effect of changing from one style to another, and I'm not really sure when the code base will be consistent. When wondering what the proper code style for the project is your best bet is to look at the most most recently changed code is and go with that style for future changes, while refactoring code that you run into that doesn't meet that style as you go along. I will eventually settle on a single style and work toward bringing everything under that one style.
 * There are components of the code that are left over from EmulationStation that are no longer necessary or even being used in many places. If you find one of these and you feel like removing it, by all means let me know and ask if you can jump in - I'm all for it.
 
 Building
