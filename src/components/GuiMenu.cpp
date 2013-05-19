@@ -15,21 +15,21 @@ GuiMenu::GuiMenu(GuiComponent* parent)
 	mSkippedMenuClose = false;
 
 	Renderer::registerComponent(this);
-	InputManager::registerComponent(this);
+	input::registerComponent(this);
 }
 
 GuiMenu::~GuiMenu()
 {
 	Renderer::unregisterComponent(this);
-	InputManager::unregisterComponent(this);
+	input::unregisterComponent(this);
 
 	delete mList;
 	mParent->resume();
 }
 
-void GuiMenu::onInput(InputManager::InputButton button, bool keyDown)
+void GuiMenu::onInput(input::InputButton button, bool keyDown)
 {
-	if(button == InputManager::MENU && !keyDown)
+	if(button == input::MENU && !keyDown)
 	{
 		if(!mSkippedMenuClose)
 		{
@@ -40,7 +40,7 @@ void GuiMenu::onInput(InputManager::InputButton button, bool keyDown)
 		}
 	}
 
-	if(button == InputManager::BUTTON1 && keyDown)
+	if(button == input::BUTTON1 && keyDown)
 	{
 		if(system(mList->getSelectedObject().c_str()) != 0)
 		{

@@ -19,7 +19,7 @@ public:
 
 	void onRender();
 	void onTick(int deltaTime);
-	void onInput(InputManager::InputButton button, bool keyDown);
+	void onInput(input::InputButton button, bool keyDown);
 
 	void addObject(std::string name, listType obj, unsigned int color = 0xFF0000);
 	void clear();

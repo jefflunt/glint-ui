@@ -12,7 +12,7 @@ public:
   ~GuiInputConfig();
 
   void onRender();
-  void onInput(InputManager::InputButton button, bool keyDown);
+  void onInput(input::InputButton button, bool keyDown);
 private:
   bool mDone;
   int mInputNum;
@@ -22,9 +22,9 @@ private:
   static int sInputCount;
   static std::string sConfigPath;
 
-  std::map<int, InputManager::InputButton> mButtonMap;
-  std::map<int, InputManager::InputButton> mAxisPosMap;
-  std::map<int, InputManager::InputButton> mAxisNegMap;
+  std::map<int, input::InputButton> mButtonMap;
+  std::map<int, input::InputButton> mAxisPosMap;
+  std::map<int, input::InputButton> mAxisNegMap;
   void writeConfig();
 };
 

@@ -14,7 +14,7 @@ public:
 	~GuiFastSelect();
 
 	void onRender();
-	void onInput(InputManager::InputButton button, bool keyDown);
+	void onInput(input::InputButton button, bool keyDown);
 	void onTick(int deltaTime);
 private:
 	static const std::string LETTERS;

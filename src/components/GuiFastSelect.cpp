@@ -13,7 +13,7 @@ GuiFastSelect::GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, cha
 		mLetterID = 0;
 
 	Renderer::registerComponent(this);
-	InputManager::registerComponent(this);
+	input::registerComponent(this);
 
 	mParent = parent;
 	mList = list;
@@ -34,7 +34,7 @@ GuiFastSelect::GuiFastSelect(GuiComponent* parent, GuiList<FileData*>* list, cha
 GuiFastSelect::~GuiFastSelect()
 {
 	Renderer::unregisterComponent(this);
-	InputManager::unregisterComponent(this);
+	input::unregisterComponent(this);
 
 	delete mBox;
 
@@ -53,28 +53,28 @@ void GuiFastSelect::onRender()
 	Renderer::drawCenteredText(LETTERS.substr(mLetterID, 1), 0, sh * 0.5 - (Renderer::getDefaultFont(Renderer::MEDIUM)->getHeight() * 0.5), mTextColor, Renderer::getDefaultFont(Renderer::MEDIUM));
 }
 
-void GuiFastSelect::onInput(InputManager::InputButton button, bool keyDown)
+void GuiFastSelect::onInput(input::InputButton button, bool keyDown)
 {
-	if(button == InputManager::UP && keyDown)
+	if(button == input::UP && keyDown)
 	{
 		mScrollOffset = -1;
 		scroll();
 	}
 
-	if(button == InputManager::DOWN && keyDown)
+	if(button == input::DOWN && keyDown)
 	{
 		mScrollOffset = 1;
 		scroll();
 	}
 
-	if((button == InputManager::UP || button == InputManager::DOWN) && !keyDown)
+	if((button == input::UP || button == input::DOWN) && !keyDown)
 	{
 		mScrolling = false;
 		mScrollTimer = 0;
 		mScrollOffset = 0;
 	}
 
-	if(button == InputManager::SELECT && !keyDown)
+	if(button == input::SELECT && !keyDown)
 	{
 		setListPos();
 		delete this;

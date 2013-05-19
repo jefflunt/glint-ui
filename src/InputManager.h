@@ -8,28 +8,28 @@
 
 class GuiComponent;
 
-//The InputManager takes native system input and abstracts it into InputButtons.
+//The input takes native system input and abstracts it into InputButtons.
 //GuiComponents can be registered to receive onInput() events.
-namespace InputManager {
-	void registerComponent(GuiComponent* comp);
-	void unregisterComponent(GuiComponent* comp);
+namespace input {
+  void registerComponent(GuiComponent* comp);
+  void unregisterComponent(GuiComponent* comp);
 
-	void loadConfig();
+  void loadConfig();
 
-	//enum for identifying input, regardless of configuration
-	enum InputButton { UNKNOWN, UP, DOWN, LEFT, RIGHT, BUTTON1, BUTTON2, MENU, SELECT, PAGEUP, PAGEDOWN};
+  //enum for identifying input, regardless of configuration
+  enum InputButton { UNKNOWN, UP, DOWN, LEFT, RIGHT, BUTTON1, BUTTON2, MENU, SELECT, PAGEUP, PAGEDOWN };
 
-	void processEvent(SDL_Event* event);
+  void processEvent(SDL_Event* event);
 
-	extern std::vector<GuiComponent*> inputVector;
-	extern SDL_Event* lastEvent; //mostly for GuiInputConfig
-	extern int deadzone;
-	std::string getConfigPath();
+  extern std::vector<GuiComponent*> inputVector;
+  extern SDL_Event* lastEvent; //mostly for GuiInputConfig
+  extern int deadzone;
+  std::string getConfigPath();
 
-	extern std::map<int, InputButton> joystickButtonMap;
-	extern std::map<int, InputButton> joystickAxisPosMap, joystickAxisNegMap;
-	extern std::map<int, int> axisState;
-	extern InputButton hatState;
-}
+  extern std::map<int, InputButton> joystickButtonMap;
+  extern std::map<int, InputButton> joystickAxisPosMap, joystickAxisNegMap;
+  extern std::map<int, int> axisState;
+  extern InputButton hatState;
+} // namespace
 
 #endif

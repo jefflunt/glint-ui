@@ -23,7 +23,7 @@ public:
 	void setSystemId(int id);
 
 	void onRender();
-	void onInput(InputManager::InputButton button, bool keyDown);
+	void onInput(input::InputButton button, bool keyDown);
 	void onPause();
 	void onResume();
 	void onInit();

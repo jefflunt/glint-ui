@@ -55,7 +55,7 @@ namespace Renderer
 		}
 
 		//have to reload config to re-open SDL joysticks
-		InputManager::loadConfig();
+		input::loadConfig();
 
 
 

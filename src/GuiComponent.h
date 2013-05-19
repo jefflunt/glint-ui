@@ -36,7 +36,7 @@ public:
 	virtual void onInit() { };
 	virtual void onDeinit() { };
 
-	virtual void onInput(InputManager::InputButton button, bool keyDown) { };
+	virtual void onInput(input::InputButton button, bool keyDown) { };
 
 	void addChild(GuiComponent* comp);
 	void removeChild(GuiComponent* comp);

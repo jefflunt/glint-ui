@@ -11,7 +11,7 @@ public:
 	GuiMenu(GuiComponent* parent);
 	~GuiMenu();
 
-	void onInput(InputManager::InputButton button, bool keyDown);
+	void onInput(input::InputButton button, bool keyDown);
 	void onRender();
 
 private:
