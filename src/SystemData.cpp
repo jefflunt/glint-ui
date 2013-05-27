@@ -201,33 +201,6 @@ void SystemData::loadConfig() {
   return;
 }
 
-void SystemData::writeExampleConfig() {
-  std::string path = getConfigPath();
-
-  std::ofstream file(path.c_str());
-
-  file << "# This is the glint-ui systems configuration file." << std::endl;
-  file << "# Lines that begin with a hash (#) are ignored, as are empty lines." << std::endl;
-  file << "# A sample system might look like this:" << std::endl;
-  file << "#NAME=Nintendo Entertainment System" << std::endl;
-  file << "#PATH=~/ROMs/nes/" << std::endl;
-  file << "#EXTENSION=.nes .NES" << std::endl;
-  file << "#COMMAND=retroarch -L ~/cores/libretro-fceumm.so %ROM%" << std::endl << std::endl;
-
-  file << "#NAME is just a name to identify the system." << std::endl;
-  file << "#PATH is the path to start the recursive search for ROMs in. ~ will be expanded into the $HOME variable." << std::endl;
-  file << "#EXTENSION is a list of extensions to search for, separated by spaces. You MUST include the period, and it must be exact - it's case sensitive, and no wildcards." << std::endl;
-  file << "#COMMAND is the shell command to execute when a game is selected. %ROM% will be replaced with the (bash special-character escaped) path to the ROM." << std::endl << std::endl;
-
-  file << "#Now try your own!" << std::endl;
-  file << "NAME=" << std::endl;
-  file << "PATH=" << std::endl;
-  file << "EXTENSION=" << std::endl;
-  file << "COMMAND=" << std::endl;
-
-  file.close();
-}
-
 void SystemData::deleteSystems() {
   for (unsigned int i = 0; i < sSystemVector.size(); i++) {
     delete sSystemVector.at(i);

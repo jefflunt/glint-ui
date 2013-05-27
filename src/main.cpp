@@ -34,10 +34,7 @@ void runFrontEnd();
 void processCmdLineArgs(int argc, char* argv[]);
 void initRendererOrDie();
 void ensureConfigDirectoryExists();
-void createDemoConfig();
 bool configSettingsDoNotExist();
-bool configExistsButIsEmpty();
-
 
 // Start app
 int main(int argc, char* argv[]) {
@@ -82,27 +79,9 @@ void shutdown() {
 }
 
 void processConfigOrDie() {
-  if (configSettingsDoNotExist())	{
-    createDemoConfig();
-    keepRunning = false;
-  } else if (configExistsButIsEmpty()) {
-    cerr << "A system config file in " << SystemData::getConfigPath() << " was found, but contained no systems.\n";
-    cerr << "Does at least one system have a game presesnt?\n";
-    keepRunning = false;
-  } else {
-    //choose which GUI to open depending on Input configuration
-    if (fs::exists(Input::getConfigPath())) {
-      //an input config already exists - load it and proceed to the gamelist as usual.
-      Input::initConfig();
-      GuiGameList::create();
-    } else {
-      // if no input.cfg is present, but a joystick is connected, launch the input config GUI
-      if (SDL_NumJoysticks() > 0)
-        new GuiInputConfig();
-      else
-        GuiGameList::create();
-    }
-  }
+  SystemData::loadConfig();
+  Input::initConfig();
+  GuiGameList::create();
 }
 
 void runFrontEnd() {
@@ -160,19 +139,7 @@ void ensureConfigDirectoryExists() {
   }
 }
 
-void createDemoConfig() {
-  if (configSettingsDoNotExist()) {
-    cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
-    SystemData::writeExampleConfig();
-    cerr << "Set it up, then re-run glint-ui.\n";
-  }
-}
-
 bool configSettingsDoNotExist() {
   return !fs::exists(SystemData::getConfigPath());
 }
 
-bool configExistsButIsEmpty() {
-  SystemData::loadConfig();
-  return (SystemData::sSystemVector.size() == 0);
-}
