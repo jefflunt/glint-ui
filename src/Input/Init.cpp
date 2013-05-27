@@ -65,18 +65,23 @@ namespace Input {
           uiActionIndex = 8;
         
         // The actual button mapping
-        if (startsWith(configValue, "+"))
-          joystickAxisPosMap[atoi(configValue.c_str())] = (InputButton)uiActionIndex;
-        else if (startsWith(configValue, "-"))
-          joystickAxisNegMap[atoi(configValue.c_str())] = (InputButton)uiActionIndex;
-        else
+        if (startsWith(configValue, "+")) {
+          joystickAxisPosMap[abs(atoi(configValue.c_str()))] = (InputButton)uiActionIndex;
+          cout << "\tAxis + : (cfgFile): " << configValue << "(" << abs(atoi(configValue.c_str())) << ")" << " => (glint-ui mapping) " << uiActionIndex << "\n";
+        } else if (startsWith(configValue, "-")) {
+          joystickAxisNegMap[abs(atoi(configValue.c_str()))] = (InputButton)uiActionIndex;
+          cout << "\tAxis - : (cfgFile): " << configValue << "(" << abs(atoi(configValue.c_str())) << ")" << " => (glint-ui mapping) " << uiActionIndex << "\n";
+        } else {
           joystickButtonMap[atoi(configValue.c_str())] = (InputButton)uiActionIndex;
+          cout << "\tButton: (cfgFile): " << configValue << " => (glint-ui mapping) " << uiActionIndex << "\n";
+        }
 
-        cout << "\tMapping: (cfgFile): " << configValue << " => (glint-ui mapping) " << uiActionIndex << "\n";
       } else {
         continue;
       }
     } // while
+
+    initJoysticks();
   }
 
   void initJoysticks() {

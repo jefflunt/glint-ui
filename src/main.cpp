@@ -56,7 +56,7 @@ void init(int argc, char* argv[]) {
   cout << "OK\n";
 
   cout << "Enabling joystick...";
-  enableJoystick();
+  SDL_JoystickEventState(SDL_ENABLE);
   cout << "OK\n";
 
   cout << "Checking for existence of config directory and files...";
@@ -79,10 +79,6 @@ void shutdown() {
   cout << "glint-ui cleanly shutting down...\n";
 
   SDL_Quit();
-}
-
-void enableJoystick() {
-  SDL_JoystickEventState(SDL_ENABLE);
 }
 
 void processConfigOrDie() {
