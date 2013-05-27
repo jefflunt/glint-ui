@@ -8,35 +8,35 @@ using namespace std;
 
 class GameData;
 
-class SystemData
-{
-public:
-	SystemData(string name, string startPath, string extension, string command);
-	~SystemData();
+class SystemData {
+  public:
+    SystemData(string name, string startPath, string extension, string command);
+    ~SystemData();
 
-	FolderData* getRootFolder();
-	string getName();
-	string getStartPath();
-	string getExtension();
-	bool hasGamelist();
+    FolderData* getRootFolder();
+    string getName();
+    string getStartPath();
+    string getExtension();
+    bool hasGamelist();
 
-	void launchGame(GameData* game);
+    void launchGame(GameData* game);
 
-	static void deleteSystems();
-	static void loadConfig();
-	static void writeExampleConfig();
-	static string getConfigPath();
+    static void deleteSystems();
+    static void loadConfig();
+    static void writeExampleConfig();
+    static string getConfigPath();
 
-	static vector<SystemData*> sSystemVector;
-private:
-	string mName;
-	string mStartPath;
-	string mSearchExtension;
-	string mLaunchCommand;
+    static vector<SystemData*> sSystemVector;
 
-  void populateFolder(FolderData* folder);
+  private:
+    string mName;
+    string mStartPath;
+    string mSearchExtension;
+    string mLaunchCommand;
 
-	FolderData* mRootFolder;
+    void populateFolder(FolderData* folder);
+
+    FolderData* mRootFolder;
 };
 
 #endif
