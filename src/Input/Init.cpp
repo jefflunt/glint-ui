@@ -20,47 +20,63 @@ namespace Input {
   }
 
   void initConfig() {
-    //clear any old config
+    // Clear any old config
     joystickButtonMap.clear();
     joystickAxisPosMap.clear();
     joystickAxisNegMap.clear();
 
+    // Init the stuff we need to catch config options
     string inputConfigLinePrefix = "input_player";
     string path = getConfigPath();
     ifstream file(path.c_str());
+    int uiActionIndex = 0; // UNKNOWN
 
-    cout << "Reading input config file...\n";
+    // Reading input config file from retroarch
     while(file.good()) {
       string line;
       getline(file, line);
       string inputConfigLinePrefix = "input_player";
 
+      // If the line starts with the specified prefix, then attempt to handle it
       if (startsWith(line, inputConfigLinePrefix)) {
         vector<string> configLineElems;
         configLineElems = split(line, ' ', configLineElems);
         string configOption = configLineElems[0];
-        string configValue = configLineElems[2];
+        string configValue = stripQuotationMarks(configLineElems[2]);
+
+        uiActionIndex = 0;
+
+        // An ugly, piece of crap set of if statements
+        if (configOption == "input_player1_up_axis")
+          uiActionIndex = 1;
+        else if (configOption == "input_player1_down_axis")
+          uiActionIndex = 2;
+        else if (configOption == "input_player1_left_axis")
+          uiActionIndex = 3;
+        else if (configOption == "input_player1_right_axis")
+          uiActionIndex = 4;
+        else if (configOption == "input_player1_a_btn")
+          uiActionIndex = 5;
+        else if (configOption == "input_player1_b_btn")
+          uiActionIndex = 6;
+        else if (configOption == "input_player1_start_btn")
+          uiActionIndex = 7;
+        else if (configOption == "input_player1_select_btn")
+          uiActionIndex = 8;
         
-        cout << "\tConfig line: " << line << "\n";
-        cout << "\t\tOpt: " << configOption << "\n";
-        cout << "\t\tVal: " << configValue  << "\n";
+        // The actual button mapping
+        if (startsWith(configValue, "+"))
+          joystickAxisPosMap[atoi(configValue.c_str())] = (InputButton)uiActionIndex;
+        else if (startsWith(configValue, "-"))
+          joystickAxisNegMap[atoi(configValue.c_str())] = (InputButton)uiActionIndex;
+        else
+          joystickButtonMap[atoi(configValue.c_str())] = (InputButton)uiActionIndex;
+
+        cout << "\tMapping: (cfgFile): " << configValue << " => (glint-ui mapping) " << uiActionIndex << "\n";
       } else {
-        cout << "\tUnknwn line: " << line << "\n";
         continue;
       }
-    }
-
-/*
-    while (file.good()) {
-      if (tokens[0] == "BUTTON") {
-        joystickButtonMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
-      } else if(tokens[0] == "AXISPOS") {
-        joystickAxisPosMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
-      } else if(tokens[0] == "AXISNEG") {
-        joystickAxisNegMap[atoi(tokens[1].c_str())] = (InputButton)atoi(tokens[2].c_str());
-      }
-    }
-*/
+    } // while
   }
 
   void initJoysticks() {

@@ -1,4 +1,4 @@
-// glint-es, a graphical front-end for ROM browsing. Created by Alec "Aloshi" Lofquist and modified by Jeff Lunt
+// glint-ui, a graphical front-end for ROM browsing. Created by Alec "Aloshi" Lofquist and modified by Jeff Lunt
 
 #include <iostream>
 #include "Renderer.h"
@@ -76,7 +76,7 @@ void shutdown() {
   SystemData::deleteSystems();
   bcm_host_deinit();
 
-  cout << "glint-es cleanly shutting down...\n";
+  cout << "glint-ui cleanly shutting down...\n";
 
   SDL_Quit();
 }
@@ -89,7 +89,6 @@ void processConfigOrDie() {
   if (configSettingsDoNotExist())	{
     createDemoConfig();
     keepRunning = false;
-
   } else if (configExistsButIsEmpty()) {
     cerr << "A system config file in " << SystemData::getConfigPath() << " was found, but contained no systems.\n";
     cerr << "Does at least one system have a game presesnt?\n";
@@ -158,7 +157,7 @@ void initRendererOrDie() {
 
 void ensureConfigDirectoryExists() {
   string home = getenv("HOME");
-  string configDir = home + "/.glint-es";
+  string configDir = home + "/.glint-ui";
   if(!fs::exists(configDir)) {
     cout << "Creating config directory \"" << configDir << "\"\n";
     fs::create_directory(configDir);
@@ -169,7 +168,7 @@ void createDemoConfig() {
   if (configSettingsDoNotExist()) {
     cerr << "A system config file in " << SystemData::getConfigPath() << " was not found. An example will be created.\n";
     SystemData::writeExampleConfig();
-    cerr << "Set it up, then re-run glint-es.\n";
+    cerr << "Set it up, then re-run glint-ui.\n";
   }
 }
 

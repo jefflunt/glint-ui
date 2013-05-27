@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 #include "StringParsing.h"
 using namespace std;
@@ -15,5 +16,12 @@ namespace StringParsing {
     }
 
     return elems;
+  }
+
+ string stripQuotationMarks(string s) {
+    s.erase(remove( s.begin(), s.end(), '"' ), s.end());
+    s.erase(remove( s.begin(), s.end(), '\'' ), s.end());
+
+    return s;
   }
 }

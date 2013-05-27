@@ -15,4 +15,4 @@
 *.d
 
 #Compiled executable
-glint-es
+glint-ui

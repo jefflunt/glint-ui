@@ -60,7 +60,7 @@ void GuiMenu::populateList()
 	//the list will automatically adjust as items are added to it, this should be the only area you need to change
   mList->addObject("Reboot glint", "sudo shutdown -r now", 0xFFFFFFFF);
   mList->addObject("Shutdown glint", "sudo shutdown -hP now", 0xFFFFFFFF);
-	mList->addObject("Exit", "pkill glint-es", 0xFFFFFFFF);
+	mList->addObject("Exit", "pkill glint-ui", 0xFFFFFFFF);
 }
 
 void GuiMenu::onRender()

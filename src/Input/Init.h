@@ -6,7 +6,7 @@
 #include <SDL/SDL.h>
 using namespace std;
 
-// Reads the input config file and maps buttons to glint-es action
+// Reads the input config file and maps buttons to glint-ui action
 namespace Input {
   // Returns the path to the config file
   string getConfigPath();

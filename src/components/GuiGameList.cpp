@@ -181,7 +181,7 @@ void GuiGameList::updateTheme() {
     return;
 
   std::string defaultPath = getenv("HOME");
-  defaultPath += "/.glint-es/es_theme.xml";
+  defaultPath += "/.glint-ui/es_theme.xml";
   std::string themePath = mSystem->getStartPath() + "/theme.xml";
 
   if(boost::filesystem::exists(themePath))

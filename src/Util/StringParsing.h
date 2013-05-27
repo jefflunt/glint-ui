@@ -9,4 +9,14 @@ namespace StringParsing {
 
   // Splits 'str' using 'delim'
   vector<string> &split(string s, char delim, vector<string> &elems);
+
+  // Returns a copy of the specified string with all the single and double
+  // quotes removed.
+  //
+  // string str = "We don't want your \"upgrades\" anymore.";
+  // stripQuotationMarks(str);
+  //   => "We dont want your upgrades anymore"
+  //             ^           ^       ^
+  //
+  string stripQuotationMarks(string s);
 }

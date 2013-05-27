@@ -232,7 +232,7 @@ void SystemData::writeExampleConfig()
 
 	std::ofstream file(path.c_str());
 
-	file << "# This is the glint-es systems configuration file." << std::endl;
+	file << "# This is the glint-ui systems configuration file." << std::endl;
 	file << "# Lines that begin with a hash (#) are ignored, as are empty lines." << std::endl;
 	file << "# A sample system might look like this:" << std::endl;
 	file << "#NAME=Nintendo Entertainment System" << std::endl;
@@ -273,7 +273,7 @@ std::string SystemData::getConfigPath()
 		return "";
 	}
 
-	return(home + "/.glint-es/es_systems.cfg");
+	return(home + "/.glint-ui/es_systems.cfg");
 }
 
 FolderData* SystemData::getRootFolder()
